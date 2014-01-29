@@ -262,15 +262,68 @@ public class CalcTest extends TestCase {
 		assertEquals(60.0, cal.equal());
 	}
 
-	//定数乗算の後に乗算
-	
-	//定数乗算の後に加算
-	
-	//定数乗算の後に減算
-	
-	//定数乗算の後に除算
+	// 定数乗算の後に乗算
+	public void test_multiply_after_const_multiply_calcs() {
+		cal.setVal(5);
+		cal.setOperatorMul();
+		cal.setVal(10);
+		assertEquals(50.0, cal.equal());
+		cal.setVal(6);
+		assertEquals(60.0, cal.equal());
+		cal.setOperatorMul();
+		cal.setVal(5);
+		assertEquals(300.0, cal.equal());
+	}
 
-	//定数加算。後にかけた値がセットされ、移行　？＝　でセットされた値で加算算していく
+	// 定数乗算の後に加算
+	public void test_add_after_const_multiply_calcs() {
+		cal.setVal(5);
+		cal.setOperatorMul();
+		cal.setVal(10);
+		assertEquals(50.0, cal.equal());
+		cal.setVal(6);
+		assertEquals(60.0, cal.equal());
+		cal.setOperatorAdd();
+		cal.setVal(5);
+		assertEquals(65.0, cal.equal());
+		cal.setOperatorAdd();
+		cal.setVal(5);
+		assertEquals(70.0, cal.equal());
+	}
+
+	// 定数乗算の後に減算
+	public void test_sub_after_const_multiply_calcs() {
+		cal.setVal(5);
+		cal.setOperatorMul();
+		cal.setVal(10);
+		assertEquals(50.0, cal.equal());
+		cal.setVal(6);
+		assertEquals(60.0, cal.equal());
+		cal.setOperatorSub();
+		cal.setVal(5);
+		assertEquals(55.0, cal.equal());
+		cal.setOperatorSub();
+		cal.setVal(5);
+		assertEquals(50.0, cal.equal());
+	}
+
+	// 定数乗算の後に除算
+	public void test_div_after_const_multiply_calcs() {
+		cal.setVal(5);
+		cal.setOperatorMul();
+		cal.setVal(10);
+		assertEquals(50.0, cal.equal());
+		cal.setVal(6);
+		assertEquals(60.0, cal.equal());
+		cal.setOperatorDiv();
+		cal.setVal(5);
+		assertEquals(12.0, cal.equal());
+		cal.setOperatorDiv();
+		cal.setVal(6);
+		assertEquals(2.0, cal.equal());
+	}
+
+	// 定数加算。後にかけた値がセットされ、以降　？＝　でセットされた値で加算算していく
 	public void test_numbers_are_continuously_added_with_equal() {
 		cal.setVal(5);
 		cal.setOperatorAdd();
@@ -279,6 +332,94 @@ public class CalcTest extends TestCase {
 		cal.setVal(6);
 		assertEquals(16.0, cal.equal());
 	}
+
+	// 定数加算の後に乗算
+	public void test_multiply_after_const_add_calcs() {
+		cal.setVal(5);
+		cal.setOperatorAdd();
+		cal.setVal(10);
+		assertEquals(15.0, cal.equal());
+		cal.setVal(6);
+		assertEquals(16.0, cal.equal());
+		cal.setOperatorMul();
+		cal.setVal(5);
+		assertEquals(80.0, cal.equal());
+	}
+
+	// 定数加算の後に加算
+	public void test_add_after_const_add_calcs() {
+		cal.setVal(5);
+		cal.setOperatorAdd();
+		cal.setVal(10);
+		assertEquals(15.0, cal.equal());
+		cal.setVal(6);
+		assertEquals(16.0, cal.equal());
+		cal.setOperatorAdd();
+		cal.setVal(5);
+		assertEquals(21.0, cal.equal());
+	}
+
+	// 定数加算の後に加算,さらに乗算,除算
+	public void test_add_mul_div_after_const_add_calcs() {
+		cal.setVal(5);
+		cal.setOperatorAdd();
+		cal.setVal(10);
+		assertEquals(15.0, cal.equal());
+		cal.setVal(6);
+		assertEquals(16.0, cal.equal());
+		cal.setOperatorAdd();
+		cal.setVal(5);
+		assertEquals(21.0, cal.equal());
+		cal.setOperatorMul();
+		cal.setVal(8);
+		assertEquals(168.0, cal.equal());
+		cal.setOperatorDiv();
+		cal.setVal(5);
+		assertEquals(33.6, cal.equal());
+	}
+
+	// 定数加算の後に除算
+	private void set_div_after_const_add_calcs() {
+		cal.setVal(5);
+		cal.setOperatorAdd();
+		cal.setVal(10);
+		assertEquals(15.0, cal.equal());
+		cal.setVal(6);
+		assertEquals(16.0, cal.equal());
+		cal.setOperatorDiv();
+		cal.setVal(5);
+		assertEquals(3.2, cal.equal());
+	}
+
+	public void test_div_after_const_add_calcs() {
+		set_div_after_const_add_calcs();
+	}
+
+	// 定数加算の後に除算、さらに乗算、加算
+	public void test_div_mul_add_after_const_add_calcs() {
+		set_div_after_const_add_calcs();
+		cal.setOperatorMul();
+		cal.setVal(5);
+		assertEquals(16.0, cal.equal());
+	}
+
+	// 定数加算の後に除算、さらに乗算、加算、さらに定数加算。
+	public void test_div_mul_add_const_add_after_const_add_calcs() {
+		set_div_after_const_add_calcs();
+		cal.setOperatorMul();
+		cal.setVal(5);
+		assertEquals(16.0, cal.equal());
+		cal.setOperatorAdd();
+		cal.setVal(10);
+		assertEquals(26.0, cal.equal());
+		cal.setVal(20);
+		assertEquals(30.0, cal.equal());
+		cal.setVal(30);
+		assertEquals(40.0, cal.equal());
+	}
+
+	// 定数除算
+	// 定数減算
 
 	// 0で割ったらエラー表示
 	// overflowにおいては 1e の表記を行う

@@ -11,10 +11,8 @@ public class calc {
 	private BigDecimal setB;
 	private BigDecimal setTmp;
 	
-	private BigDecimal setConstMulB1;
-	private BigDecimal setConstMulB2;
-	private BigDecimal setConstAddB1;
-	private BigDecimal setConstAddB2;
+	private BigDecimal setConstValB1;
+	private BigDecimal setConstValB2;
 	private boolean isConstMulMode;
 	private boolean isConstAddMode;
 	private boolean isEqual;
@@ -38,11 +36,9 @@ public class calc {
 		isConstAddMode = false;
 		isEqual = false;
 		setTmp = new BigDecimal(0);
-		setConstMulB1 = new BigDecimal(0);
-		setConstMulB2 = new BigDecimal(0);
-		setConstAddB1 = new BigDecimal(0);
-		setConstAddB2 = new BigDecimal(0);
-	}
+		setConstValB1 = new BigDecimal(0);
+		setConstValB2 = new BigDecimal(0);
+		}
 
 	public void setVal(double i) {
 		
@@ -60,9 +56,9 @@ public class calc {
 			}
 			
 			if (isConstAddMode == false) {
-				setConstAddB1 = new BigDecimal(i);
+				setConstValB1 = new BigDecimal(i);
 			} else {
-				setConstAddB2 = new BigDecimal(i);
+				setConstValB2 = new BigDecimal(i);
 			}
 			
 			
@@ -91,9 +87,9 @@ public class calc {
 			}
 			
 			if (isConstMulMode == false) {
-				setConstMulB1 = new BigDecimal(i);
+				setConstValB1 = new BigDecimal(i);
 			} else {
-				setConstMulB2 = new BigDecimal(i);
+				setConstValB2 = new BigDecimal(i);
 			}
 			isConstAddMode = false;
 			break;
@@ -132,6 +128,7 @@ public class calc {
 	 */
 	public void setOperatorAdd() {
 		operator = ADD;	
+		isEqual = false;
 		addTmpVal();
 	}
 	
@@ -140,27 +137,40 @@ public class calc {
 	 */
 	public void setOperatorSub() {
 		operator = SUB;
+		isEqual = false;
 		addTmpVal();
 	}
 	
 	public void setOperatorMul() {
 		operator = MUL;
+		isEqual = false;
 	}
 	
 	public void setOperatorDiv() {
 		operator = DIV;
+		isEqual = false;
 	}
 	
 	public double equal() {
 		isEqual = true;
 		
 		if (isConstMulMode == true) {
-			return setConstMulB1.multiply(setConstMulB2).doubleValue();
+			memoryB = setConstValB1.multiply(setConstValB2);
+			isConstMulMode = false;
+			setB = new BigDecimal(0);
+			setTmp = new BigDecimal(0);
+			return setConstValB1.multiply(setConstValB2).doubleValue();
 		} else if (isConstAddMode == true) {
-			return setConstAddB1.add(setConstAddB2).doubleValue();
+			memoryB = setConstValB1.add(setConstValB2);
+			isConstAddMode = false;
+			setB = new BigDecimal(0);
+			setTmp = new BigDecimal(0);
+			return setConstValB1.add(setConstValB2).doubleValue();
 		} else {
 			memoryB = memoryB.add(setTmp);
 			memoryB = memoryB.add(setB);
+			setB = new BigDecimal(0);
+			setTmp = new BigDecimal(0);
 			return memoryB.doubleValue();
 		}
 	}
