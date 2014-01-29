@@ -1,0 +1,6 @@
+01:20:29 **** Build of configuration Default for project testMake ****
+make all 
+make: *** No rule to make target `all'.  Stop.
+
+01:20:30 Build Finished (took 120ms)
+

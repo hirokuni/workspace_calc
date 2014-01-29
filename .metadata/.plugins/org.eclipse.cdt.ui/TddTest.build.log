@@ -1,0 +1,13 @@
+09:21:09 **** Incremental Build of configuration Debug for project TddTest ****
+make all 
+make -i -f MakefileCppUTest.mk 
+compiling FakeMicroTime.c
+compiling FlashTest.cpp
+Linking BookCode_CppUTest_tests
+Running BookCode_CppUTest_tests
+........
+OK (8 tests, 8 ran, 145 checks, 0 ignored, 0 filtered out, 5 ms)
+
+
+09:21:11 Build Finished (took 1s.934ms)
+
