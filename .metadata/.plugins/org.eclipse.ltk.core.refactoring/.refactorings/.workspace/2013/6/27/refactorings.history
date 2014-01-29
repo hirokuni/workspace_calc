@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Delete resource &apos;LightSchedule/BookCode_CppUTest_tests&apos;" deleteContents="false" description="Delete resource &apos;LightSchedule/BookCode_CppUTest_tests&apos;" element1="/LightSchedule/BookCode_CppUTest_tests" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1372599686782"/>
-</session>

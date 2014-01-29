@@ -1,2 +1,0 @@
-INDEX VERSION 1.126+/Users/hirokuni/Documents/workspace_calc/.metadata/.plugins/org.eclipse.jdt.core
-1025330258.index

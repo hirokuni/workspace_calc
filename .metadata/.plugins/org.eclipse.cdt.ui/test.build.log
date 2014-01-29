@@ -1,6 +1,0 @@
-01:18:34 **** Build of configuration Debug for project test ****
-make all 
-make: *** No rule to make target `all'.  Stop.
-
-01:18:34 Build Finished (took 76ms)
-

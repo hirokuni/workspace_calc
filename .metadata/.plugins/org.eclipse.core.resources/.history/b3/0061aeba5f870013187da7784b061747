@@ -1,7 +1,0 @@
-package com.kawasaki.calculator.test;
-
-import junit.framework.TestCase;
-
-public class CalcTest extends TestCase {
-
-}

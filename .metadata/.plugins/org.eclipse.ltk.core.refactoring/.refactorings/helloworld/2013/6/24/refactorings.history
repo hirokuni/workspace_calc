@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename resource &apos;helloworld/src/mock&apos; to &apos;hw_mock&apos;" description="Rename resource &apos;mock&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/mock" name="hw_mock" stamp="1370785675430" updateReferences="true"/>
-</session>
