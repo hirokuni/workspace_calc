@@ -47,17 +47,11 @@ public class calc {
 		case NON:
 			memoryB = new BigDecimal(i);
 			reset_all_const_calc();
-			break;
+			return;
 		case ADD:
 			setB = new BigDecimal(i);
 			if (isEqual == true) {
 				isConstAddMode = true;
-			}
-
-			if (isConstAddMode == false) {
-				setConstValB1 = new BigDecimal(i);
-			} else {
-				setConstValB2 = new BigDecimal(i);
 			}
 			break;
 		case SUB:
@@ -65,12 +59,6 @@ public class calc {
 
 			if (isEqual == true) {
 				isConstSubMode = true;
-			}
-
-			if (isConstSubMode == false) {
-				setConstValB1 = new BigDecimal(i);
-			} else {
-				setConstValB2 = new BigDecimal(i);
 			}
 			break;
 		case MUL:
@@ -87,13 +75,6 @@ public class calc {
 			if (isEqual == true) {
 				isConstMulMode = true;
 			}
-
-			if (isConstMulMode == false) {
-				setConstValB1 = new BigDecimal(i);
-			} else {
-				setConstValB2 = new BigDecimal(i);
-			}
-
 			break;
 		case DIV:
 			if (setTmp.doubleValue() != 0.0) {
@@ -109,19 +90,20 @@ public class calc {
 			if (isEqual == true) {
 				isConstDivMode = true;
 			}
-
-			if (isConstDivMode == false) {
-				setConstValB1 = new BigDecimal(i);
-			} else {
-				setConstValB2 = new BigDecimal(i);
-			}
-
 			break;
 		default:
 			Log.w(TAG, "illegal operator");
-			break;
+			return;
 		}
 
+		boolean isConstMode = isConstAddMode | isConstMulMode | isConstDivMode | isConstSubMode;
+		
+		if (isConstMode == false) {
+			setConstValB1 = new BigDecimal(i);
+		} else {
+			setConstValB2 = new BigDecimal(i);
+		}
+		
 		return;
 	}
 
@@ -146,7 +128,6 @@ public class calc {
 	 */
 	public void setOperatorAdd() {
 		operator = ADD;
-		isEqual = false;
 		reset_all_const_calc();
 		addTmpVal();
 	}
@@ -156,20 +137,17 @@ public class calc {
 	 */
 	public void setOperatorSub() {
 		operator = SUB;
-		isEqual = false;
 		reset_all_const_calc();
 		addTmpVal();
 	}
 
 	public void setOperatorMul() {
 		operator = MUL;
-		isEqual = false;
 		reset_all_const_calc();
 	}
 
 	public void setOperatorDiv() {
 		operator = DIV;
-		isEqual = false;
 		reset_all_const_calc();
 	}
 
@@ -179,34 +157,24 @@ public class calc {
 		if (isConstMulMode == true) {
 			memoryB = setConstValB2.multiply(setConstValB1);
 			isConstMulMode = false;
-			setB = new BigDecimal(0);
-			setTmp = new BigDecimal(0);
-			return setConstValB2.multiply(setConstValB1).doubleValue();
 		} else if (isConstAddMode == true) {
 			memoryB = setConstValB2.add(setConstValB1);
 			isConstAddMode = false;
-			setB = new BigDecimal(0);
-			setTmp = new BigDecimal(0);
-			return setConstValB2.add(setConstValB1).doubleValue();
 		} else if (isConstDivMode == true) {
 			memoryB = setConstValB2.divide(setConstValB1);
 			isConstDivMode = false;
-			setB = new BigDecimal(0);
-			setTmp = new BigDecimal(0);
-			return setConstValB2.divide(setConstValB1).doubleValue();
 		} else if (isConstSubMode == true) {
 			memoryB = setConstValB2.subtract(setConstValB1);
 			isConstDivMode = false;
-			setB = new BigDecimal(0);
-			setTmp = new BigDecimal(0);
-			return setConstValB2.subtract(setConstValB1).doubleValue();
 		} else {
 			memoryB = memoryB.add(setTmp);
 			memoryB = memoryB.add(setB);
-			setB = new BigDecimal(0);
-			setTmp = new BigDecimal(0);
-			return memoryB.doubleValue();
 		}
+		
+		setB = new BigDecimal(0);
+		setTmp = new BigDecimal(0);
+		
+		return memoryB.doubleValue();
 	}
 
 }
