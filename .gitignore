@@ -2,3 +2,4 @@
 *.class
 .metadata/*
 .DS_Store
+*.ap_

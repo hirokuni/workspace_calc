@@ -253,23 +253,22 @@ public class CalcTest extends TestCase {
 	}
 
 	// 定数乗算。後にかけた値がセットされ、移行　？＝　でセットされた値でかけ算していく
-	public void test_numbers_are_continuously_multipled_with_equal() {
+	private void set_const_mul_calcs() {
 		cal.setVal(5);
 		cal.setOperatorMul();
 		cal.setVal(10);
 		assertEquals(50.0, cal.equal());
 		cal.setVal(6);
-		assertEquals(60.0, cal.equal());
+		assertEquals(60.0, cal.equal());		
+	}
+	
+	public void test_numbers_are_continuously_multipled_with_equal() {
+		set_const_mul_calcs();
 	}
 
 	// 定数乗算の後に乗算
 	public void test_multiply_after_const_multiply_calcs() {
-		cal.setVal(5);
-		cal.setOperatorMul();
-		cal.setVal(10);
-		assertEquals(50.0, cal.equal());
-		cal.setVal(6);
-		assertEquals(60.0, cal.equal());
+		set_const_mul_calcs();
 		cal.setOperatorMul();
 		cal.setVal(5);
 		assertEquals(300.0, cal.equal());
@@ -418,9 +417,103 @@ public class CalcTest extends TestCase {
 		assertEquals(40.0, cal.equal());
 	}
 
-	// 定数除算
-	// 定数減算
+	// 定数除算 ？＝　でセットされた値が割られていく
+	private void set_const_div_calcs() {
+		cal.setVal(100);
+		cal.setOperatorDiv();
+		cal.setVal(2);
+		assertEquals(50.0, cal.equal());
+		cal.setVal(5);
+		assertEquals(2.5, cal.equal());
+		cal.setVal(10);
+		assertEquals(5.0, cal.equal());
+	}
 
+	public void test_numbers_are_continuously_divided_with_equal() {
+		set_const_div_calcs();
+	}
+
+	// 定数除算の後に除算
+	public void test_div_after_const_div_calcs() {
+		set_const_div_calcs();
+		cal.setOperatorDiv();
+		cal.setVal(5);
+		assertEquals(1.0, cal.equal());
+	}
+
+	// 定数除算の後に乗算
+	public void test_mul_after_const_div_calcs() {
+		set_const_div_calcs();
+		cal.setOperatorMul();
+		cal.setVal(5);
+		assertEquals(25.0, cal.equal());
+	}
+
+	// 定数除算の後に加算
+	public void test_add_after_const_div_calcs() {
+		set_const_div_calcs();
+		cal.setOperatorAdd();
+		cal.setVal(5.5);
+		assertEquals(10.5, cal.equal());
+	}
+
+	// 定数除算の後に減算
+	public void test_sub_after_const_div_calcs() {
+		set_const_div_calcs();
+		cal.setOperatorSub();
+		cal.setVal(10.5);
+		assertEquals(-5.5, cal.equal());
+	}
+
+	// 定数減算 ？＝　でセットされた値で引かれていく
+	private void set_const_sub_calcs() {
+		cal.setVal(100);
+		cal.setOperatorSub();
+		cal.setVal(2);
+		assertEquals(98.0, cal.equal());
+		cal.setVal(5);
+		assertEquals(3.0, cal.equal());
+		cal.setVal(10);
+		assertEquals(8.0, cal.equal());
+	}
+
+	public void test_numbers_are_continuously_subtracted_with_equal() {
+		set_const_sub_calcs();
+	}
+
+	// 定数減算の後に除算
+	public void test_div_after_const_sub_calcs() {
+		set_const_sub_calcs();
+		cal.setOperatorDiv();
+		cal.setVal(5);
+		assertEquals(1.6, cal.equal());
+	}
+
+	// 定数減算の後に乗算
+	public void test_mul_after_const_sub_calcs() {
+		set_const_sub_calcs();
+		cal.setOperatorMul();
+		cal.setVal(5);
+		assertEquals(40.0, cal.equal());
+	}
+	
+	// 定数減算の後に加算
+	public void test_add_after_const_sub_calcs() {
+		set_const_sub_calcs();
+		cal.setOperatorAdd();
+		cal.setVal(5.5);
+		assertEquals(13.5, cal.equal());
+	}
+
+	// 定数減算の後に減算
+	public void test_sub_after_const_sub_calcs() {
+		set_const_sub_calcs();
+		cal.setOperatorSub();
+		cal.setVal(10.5);
+		assertEquals(-2.5, cal.equal());
+	}
+
+	
 	// 0で割ったらエラー表示
 	// overflowにおいては 1e の表記を行う
 
