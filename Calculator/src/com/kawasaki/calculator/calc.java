@@ -7,12 +7,12 @@ import android.util.Log;
 public class calc {
 	private static String TAG = calc.class.getSimpleName();
 
-	private BigDecimal memoryB;
-	private BigDecimal setB;
-	private BigDecimal setTmp;
+	private BigDecimal memory;
+	private BigDecimal tmp_memory_1;
+	private BigDecimal tmp_memory_2;
 
-	private BigDecimal setConstValB1;
-	private BigDecimal setConstValB2;
+	private BigDecimal const_val_1;
+	private BigDecimal const_val_2;
 	private boolean isConstMulMode;
 	private boolean isConstAddMode;
 	private boolean isConstDivMode;
@@ -32,44 +32,44 @@ public class calc {
 
 	public void clear() {
 		operator = NON;
-		memoryB = new BigDecimal(0);
-		setB = new BigDecimal(0);
+		memory = new BigDecimal(0);
+		tmp_memory_1 = new BigDecimal(0);
 		reset_all_const_calc();
 		isEqual = false;
-		setTmp = new BigDecimal(0);
-		setConstValB1 = new BigDecimal(0);
-		setConstValB2 = new BigDecimal(0);
+		tmp_memory_2 = new BigDecimal(0);
+		const_val_1 = new BigDecimal(0);
+		const_val_2 = new BigDecimal(0);
 	}
 
+	//when arithmeticEception happens, clear() must be called.
 	public void setVal(double i) {
 
 		switch (operator) {
 		case NON:
-			memoryB = new BigDecimal(i);
+			memory = new BigDecimal(i);
 			reset_all_const_calc();
 			return;
 		case ADD:
-			setB = new BigDecimal(i);
+			tmp_memory_1 = new BigDecimal(i);
 			if (isEqual == true) {
 				isConstAddMode = true;
 			}
 			break;
 		case SUB:
-			setB = new BigDecimal(-i);
+			tmp_memory_1 = new BigDecimal(-i);
 
 			if (isEqual == true) {
 				isConstSubMode = true;
 			}
 			break;
 		case MUL:
-			if (setTmp.doubleValue() != 0.0) {
-				setTmp = setTmp.multiply(new BigDecimal(i));
-			} else if (setB.doubleValue() != 0.0) {
-				BigDecimal tmp = setB.multiply(new BigDecimal(i));
-				setTmp = tmp;
-				setB = new BigDecimal(0);
+			if (tmp_memory_2.doubleValue() != 0.0) {
+				tmp_memory_2 = tmp_memory_2.multiply(new BigDecimal(i));
+			} else if (tmp_memory_1.doubleValue() != 0.0) {
+				tmp_memory_2 = tmp_memory_1.multiply(new BigDecimal(i));
+				tmp_memory_1 = new BigDecimal(0);
 			} else {
-				memoryB = memoryB.multiply(new BigDecimal(i));
+				memory = memory.multiply(new BigDecimal(i));
 			}
 
 			if (isEqual == true) {
@@ -77,14 +77,13 @@ public class calc {
 			}
 			break;
 		case DIV:
-			if (setTmp.doubleValue() != 0.0) {
-				setTmp = setTmp.divide(new BigDecimal(i));
-			} else if (setB.doubleValue() != 0.0) {
-				BigDecimal tmp = setB.divide(new BigDecimal(i));
-				setTmp = tmp;
-				setB = new BigDecimal(0);
+			if (tmp_memory_2.doubleValue() != 0.0) {
+				tmp_memory_2 = tmp_memory_2.divide(new BigDecimal(i));
+			} else if (tmp_memory_1.doubleValue() != 0.0) {
+				tmp_memory_2 = tmp_memory_1.divide(new BigDecimal(i));
+				tmp_memory_1 = new BigDecimal(0);
 			} else {
-				memoryB = memoryB.divide(new BigDecimal(i));
+				memory = memory.divide(new BigDecimal(i));
 			}
 
 			if (isEqual == true) {
@@ -99,20 +98,20 @@ public class calc {
 		boolean isConstMode = isConstAddMode | isConstMulMode | isConstDivMode | isConstSubMode;
 		
 		if (isConstMode == false) {
-			setConstValB1 = new BigDecimal(i);
+			const_val_1 = new BigDecimal(i);
 		} else {
-			setConstValB2 = new BigDecimal(i);
+			const_val_2 = new BigDecimal(i);
 		}
 		
 		return;
 	}
 
 	private void addTmpVal() {
-		memoryB = memoryB.add(setB);
-		setB = new BigDecimal(0);
+		memory = memory.add(tmp_memory_1);
+		tmp_memory_1 = new BigDecimal(0);
 
-		memoryB = memoryB.add(setTmp);
-		setTmp = new BigDecimal(0);
+		memory = memory.add(tmp_memory_2);
+		tmp_memory_2 = new BigDecimal(0);
 	}
 
 	private void reset_all_const_calc(){
@@ -155,26 +154,26 @@ public class calc {
 		isEqual = true;
 
 		if (isConstMulMode == true) {
-			memoryB = setConstValB2.multiply(setConstValB1);
+			memory = const_val_2.multiply(const_val_1);
 			isConstMulMode = false;
 		} else if (isConstAddMode == true) {
-			memoryB = setConstValB2.add(setConstValB1);
+			memory = const_val_2.add(const_val_1);
 			isConstAddMode = false;
 		} else if (isConstDivMode == true) {
-			memoryB = setConstValB2.divide(setConstValB1);
+			memory = const_val_2.divide(const_val_1);
 			isConstDivMode = false;
 		} else if (isConstSubMode == true) {
-			memoryB = setConstValB2.subtract(setConstValB1);
+			memory = const_val_2.subtract(const_val_1);
 			isConstDivMode = false;
 		} else {
-			memoryB = memoryB.add(setTmp);
-			memoryB = memoryB.add(setB);
+			memory = memory.add(tmp_memory_2);
+			memory = memory.add(tmp_memory_1);
 		}
 		
-		setB = new BigDecimal(0);
-		setTmp = new BigDecimal(0);
+		tmp_memory_1 = new BigDecimal(0);
+		tmp_memory_2 = new BigDecimal(0);
 		
-		return memoryB.doubleValue();
+		return memory.doubleValue();
 	}
 
 }

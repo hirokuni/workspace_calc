@@ -1,5 +1,6 @@
 package com.kawasaki.calculator;
 
+import android.util.Log;
 import junit.framework.TestCase;
 
 public class CalcTest extends TestCase {
@@ -259,9 +260,9 @@ public class CalcTest extends TestCase {
 		cal.setVal(10);
 		assertEquals(50.0, cal.equal());
 		cal.setVal(6);
-		assertEquals(60.0, cal.equal());		
+		assertEquals(60.0, cal.equal());
 	}
-	
+
 	public void test_numbers_are_continuously_multipled_with_equal() {
 		set_const_mul_calcs();
 	}
@@ -496,7 +497,7 @@ public class CalcTest extends TestCase {
 		cal.setVal(5);
 		assertEquals(40.0, cal.equal());
 	}
-	
+
 	// 定数減算の後に加算
 	public void test_add_after_const_sub_calcs() {
 		set_const_sub_calcs();
@@ -513,8 +514,31 @@ public class CalcTest extends TestCase {
 		assertEquals(-2.5, cal.equal());
 	}
 
-	
 	// 0で割ったらエラー表示
-	// overflowにおいては 1e の表記を行う
+	public void test_return_error_when_div_by_0() {
+		cal.setVal(1);
+		cal.setOperatorDiv();
 
+		try {
+			cal.setVal(0);
+			fail("no exception happned");
+		} catch (java.lang.ArithmeticException aex) {
+			//success. nothing to do
+			return;
+		} catch (Exception ex) {
+			fail("ex : " + ex);
+		}
+		
+		fail("must not reach here!!");
+	}
+
+	// overflowにおいては 1e の表記を行う
+	public void test_over_flow() {
+		cal.setVal(2147483647);
+		cal.setOperatorAdd();
+		cal.setVal(2147483647);
+		
+		Log.i("test_over_flow", "over_flow_test : " + Double.toString(cal.equal()));
+		
+	}
 }
