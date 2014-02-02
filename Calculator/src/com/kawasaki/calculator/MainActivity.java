@@ -97,6 +97,9 @@ public class MainActivity extends Activity implements OnClickListener {
 		case id.Button9:
 			data.set(9);
 			break;
+		case id.ButtonPoint:
+			data.setPoint(".");
+			break;
 		case id.Button00:
 			// cal.setVal(0);
 			break;
