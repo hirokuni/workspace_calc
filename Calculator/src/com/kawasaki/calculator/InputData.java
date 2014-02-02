@@ -4,8 +4,9 @@ import android.util.Log;
 
 public class InputData {
 	private final String TAG = InputData.class.getSimpleName();
-	String setdata;
-	boolean isSetNumber;
+	private String setdata;
+	private boolean isSetNumber;
+	private int digitLimitNumber;
 
 	public InputData() {
 		init();
@@ -14,9 +15,18 @@ public class InputData {
 	private void init() {
 		setdata = new String("0");
 		isSetNumber = false;
+		digitLimitNumber = 10;
 	}
 
 	public void set(int i) {
+
+		if (setdata.contains(".")) {
+			if (setdata.length() >= digitLimitNumber + 1)
+				return;
+		} else {
+			if (setdata.length() >= digitLimitNumber)
+				return;
+		}
 
 		if (isSetNumber) {
 			setdata = Integer.toString(i);
@@ -52,15 +62,52 @@ public class InputData {
 	}
 
 	public String getString() {
-		Log.i(TAG, "setdata + " + setdata);
+		Log.i(TAG, "getString# setdata  " + setdata);
+
+		setdata = remove_point_0(setdata);
+		
 		return setdata;
 	}
+	
+	public String remove_point_0(String str) {
+		if (str.endsWith(".0")) {
+			str = str.substring(0, str.length() - 2);
+		}
+		return str;
+	}
 
-	public void setPoint(String point) {
-
+	public void setPoint() {
+		String point = ".";
 		if (!setdata.contains("."))
 			setdata += point;
 
+	}
+
+	public void set00() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(setdata);
+
+		if (!setdata.equalsIgnoreCase("0")) {
+			int len = 0;
+			if (setdata.contains("."))
+				len -= 1;
+
+			for (int i = 0; i < 2; i++) {
+				{
+					len += setdata.length() + "0".length();
+
+					if (len <= digitLimitNumber)
+						sb.append("0");
+				}
+			}
+		}
+
+		setdata = sb.toString();
+		Log.i(TAG, "setdata : " + setdata);
+	}
+
+	public void setDigitNumberLimit(int i) {
+		digitLimitNumber = i;
 	}
 
 }

@@ -98,10 +98,10 @@ public class MainActivity extends Activity implements OnClickListener {
 			data.set(9);
 			break;
 		case id.ButtonPoint:
-			data.setPoint(".");
+			data.setPoint();
 			break;
 		case id.Button00:
-			// cal.setVal(0);
+			data.set00();
 			break;
 		default:
 			// nothing to do
@@ -143,7 +143,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			if (button_id == id.ButtonEqual) {
 				cal.setVal(data.getNumberAndClear());
 				double tmp = cal.equal();
-				result.setText(Double.toString(tmp));
+				result.setText(data.remove_point_0(Double.toString(tmp)));
 				data.setNumber(tmp);
 			} else
 				result.setText(displaied_number);
