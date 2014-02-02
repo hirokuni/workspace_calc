@@ -135,19 +135,19 @@ public class MainActivity extends Activity implements OnClickListener {
 			default:
 				// nothing to do
 			}
+			
+			// display result
+			if (button_id == id.ButtonEqual) {
+				cal.setVal(data.getNumberAndClear());
+				double tmp = cal.equal();
+				result.setText(Double.toString(tmp));
+				data.setNumber(tmp);
+			} else
+				result.setText(displaied_number);
 		} catch (java.lang.ArithmeticException aex) {
 			Log.w(TAG, aex);
 			result.setText("Error");
 		}
-
-		// display result
-		if (button_id == id.ButtonEqual) {
-			cal.setVal(data.getNumberAndClear());
-			double tmp = cal.equal();
-			result.setText(Double.toString(tmp));
-			data.setNumber(tmp);
-		} else
-			result.setText(displaied_number);
 	}
 
 	private void calc_init() {
@@ -185,6 +185,7 @@ public class MainActivity extends Activity implements OnClickListener {
 				tv.setText(str);
 				int size = (int) (i - (3 * density));
 				tv.setTextSize(size);
+				tv.setText("0");
 				break;
 			}
 		}
