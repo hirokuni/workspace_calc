@@ -4,6 +4,8 @@ import com.kawasaki.calculator.R.id;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.graphics.Paint;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -12,6 +14,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnClickListener {
+	
+
 	private final String TAG = MainActivity.class.getSimpleName();
 	int button_ids[] = { R.id.Button0, R.id.Button1, R.id.Button2,
 			R.id.Button3, R.id.Button4, R.id.Button5, R.id.Button6,
@@ -23,7 +27,9 @@ public class MainActivity extends Activity implements OnClickListener {
 	private TextView result;
 	private calc cal;
 	private InputData data;
-
+	private final String MaxString = "0123456789.";
+	private final int digitsLimit = MaxString.length() - 1;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -39,6 +45,8 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		result = (TextView) findViewById(id.display);
 
+		
+		
 		calc_init();
 		return;
 
@@ -57,7 +65,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		int button_id = v.getId();
 		String displaied_number;
 
-		//input data
+		// input data
 		switch (button_id) {
 		case id.Button0:
 			data.set(0);
@@ -95,39 +103,44 @@ public class MainActivity extends Activity implements OnClickListener {
 		default:
 			// nothing to do
 		}
-		
+
 		displaied_number = data.getString();
-		
-		//operation
-		switch(button_id){
-		case id.ButtonPlus:
-			displaied_number = data.getString();
-			cal.setVal(data.getNumberAndClear());
-			cal.setOperatorAdd();
-			break;
-		case id.ButtonMinus:
-			displaied_number = data.getString();
-			cal.setVal(data.getNumberAndClear());
-			cal.setOperatorSub();
-			break;
-		case id.ButtonDiv:
-			displaied_number = data.getString();
-			cal.setVal(data.getNumberAndClear());
-			cal.setOperatorDiv();
-			break;
-		case id.ButtonX:
-			displaied_number = data.getString();
-			cal.setVal(data.getNumberAndClear());
-			cal.setOperatorMul();
-			break;
-		case id.ButtonClear:
-			calc_init();
-			break;
-		default:
-			//nothing to do
+
+		try {
+			// operation
+			switch (button_id) {
+			case id.ButtonPlus:
+				displaied_number = data.getString();
+				cal.setVal(data.getNumberAndClear());
+				cal.setOperatorAdd();
+				break;
+			case id.ButtonMinus:
+				displaied_number = data.getString();
+				cal.setVal(data.getNumberAndClear());
+				cal.setOperatorSub();
+				break;
+			case id.ButtonDiv:
+				displaied_number = data.getString();
+				cal.setVal(data.getNumberAndClear());
+				cal.setOperatorDiv();
+				break;
+			case id.ButtonX:
+				displaied_number = data.getString();
+				cal.setVal(data.getNumberAndClear());
+				cal.setOperatorMul();
+				break;
+			case id.ButtonClear:
+				calc_init();
+				break;
+			default:
+				// nothing to do
+			}
+		} catch (java.lang.ArithmeticException aex) {
+			Log.w(TAG, aex);
+			result.setText("Error");
 		}
 
-		//display result
+		// display result
 		if (button_id == id.ButtonEqual) {
 			cal.setVal(data.getNumberAndClear());
 			double tmp = cal.equal();
@@ -139,7 +152,41 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	private void calc_init() {
 		cal = new calc();
+		cal.setDigitsLimit(digitsLimit);
 		result.setText("0");
 		data = new InputData();
+	}
+
+	protected static final int MAX_FONT_SIZE = 100;
+	protected static final int MIN_FONT_SIZE = 10;
+
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		setMaxTextSize(MaxString, result);
+	}
+	
+	/*
+	 * Sample : http://mesubuta.blog.jp/archives/2323960.html
+	 */
+	private void setMaxTextSize(String str, TextView tv) {
+		/*
+		 * 1ピクセル＝1dip/scaledDensity
+		 * http://labs.techfirm.co.jp/android/m_yamada/1668
+		 */
+		DisplayMetrics mmetrics = new DisplayMetrics();
+		Paint p = new Paint();
+		
+		getWindowManager().getDefaultDisplay().getMetrics(mmetrics);
+		final float density = mmetrics.scaledDensity;
+		for (int i = MAX_FONT_SIZE; i > MIN_FONT_SIZE; i = i - 2) {
+			p.setTextSize(i);
+			float width = tv.getWidth() / density; // Dip単位に変換します
+			if ((width >= p.measureText(str))) {
+				tv.setText(str);
+				int size = (int) (i - (3 * density));
+				tv.setTextSize(size);
+				break;
+			}
+		}
 	}
 }

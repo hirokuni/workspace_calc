@@ -9,6 +9,7 @@ public class CalcTest extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		cal = new calc();
+		cal.setDigitsLimit("0123456789.".length());
 	}
 
 	protected void tearDown() throws Exception {
@@ -602,7 +603,12 @@ public class CalcTest extends TestCase {
 	}
 
 	//8/6, nonterminating decimal expansion, ArithmeticException
-	
+	public void test_non_terminating_decimal_exception_is_caught() {
+		cal.setVal(8);
+		cal.setOperatorDiv();
+		cal.setVal(6);
+		assertEquals(1.33333333333, cal.equal());
+	}
 	
 	// overflowにおいては 1e の表記を行う
 	public void test_over_flow() {

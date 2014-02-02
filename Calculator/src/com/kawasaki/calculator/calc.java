@@ -28,6 +28,8 @@ public class calc {
 	static final int DIV = 3;
 	static final int MUL = 4;
 
+	static int digitNumLimit;
+
 	public calc() {
 		clear();
 	}
@@ -43,26 +45,29 @@ public class calc {
 		const_val_1 = new BigDecimal(0);
 		const_val_2 = new BigDecimal(0);
 		set_memory = new BigDecimal(0);
+		digitNumLimit = 10;// default;
 	}
 
 	// when arithmeticEception happens, clear() must be called.
 	public void setVal(double i) {
-
 		set_memory = new BigDecimal(i);
 		isSet = true;
 
 		switch (operator) {
 		case NON:
+			Log.d(TAG, "setVal NON : " + i);
 			memory = new BigDecimal(i);
 			reset_all_const_calc();
 			return;
 		case ADD:
+			Log.d(TAG, "setVal Add : " + i);
 			tmp_memory_1 = new BigDecimal(i);
 			if (isEqual == true) {
 				isConstAddMode = true;
 			}
 			break;
 		case SUB:
+			Log.d(TAG, "setVal Sub : " + i);
 			tmp_memory_1 = new BigDecimal(-i);
 
 			if (isEqual == true) {
@@ -70,6 +75,8 @@ public class calc {
 			}
 			break;
 		case MUL:
+			Log.d(TAG, "setVal Mul : " + i);
+
 			if (tmp_memory_2.doubleValue() != 0.0) {
 				tmp_memory_2 = tmp_memory_2.multiply(new BigDecimal(i));
 			} else if (tmp_memory_1.doubleValue() != 0.0) {
@@ -84,13 +91,22 @@ public class calc {
 			}
 			break;
 		case DIV:
+			Log.d(TAG, "setVal Div : " + i);
+
+			/*
+			 * NOTE : 銀行の計算において、小数点以下は切り捨てている場合が多いようだ （利息計算で切り上げる場合、違法の危険性がある）
+			 * TODO 四捨五入、切り捨てを計算上、いつどちらを設定するかをClearにする
+			 */
 			if (tmp_memory_2.doubleValue() != 0.0) {
-				tmp_memory_2 = tmp_memory_2.divide(new BigDecimal(i));
+				tmp_memory_2 = tmp_memory_2.divide(new BigDecimal(i),
+						digitNumLimit, BigDecimal.ROUND_DOWN);
 			} else if (tmp_memory_1.doubleValue() != 0.0) {
-				tmp_memory_2 = tmp_memory_1.divide(new BigDecimal(i));
+				tmp_memory_2 = tmp_memory_1.divide(new BigDecimal(i),
+						digitNumLimit, BigDecimal.ROUND_DOWN);
 				tmp_memory_1 = new BigDecimal(0);
 			} else {
-				memory = memory.divide(new BigDecimal(i));
+				memory = memory.divide(new BigDecimal(i), digitNumLimit,
+						BigDecimal.ROUND_DOWN);
 			}
 
 			if (isEqual == true) {
@@ -178,7 +194,7 @@ public class calc {
 			clear();
 			tmp_memory_1 = tmp;
 		}
-		
+
 		operator = DIV;
 		reset_all_const_calc();
 	}
@@ -193,7 +209,8 @@ public class calc {
 			memory = const_val_2.add(const_val_1);
 			isConstAddMode = false;
 		} else if (isConstDivMode == true) {
-			memory = const_val_2.divide(const_val_1);
+			memory = const_val_2.divide(const_val_1, digitNumLimit,
+					BigDecimal.ROUND_DOWN);
 			isConstDivMode = false;
 		} else if (isConstSubMode == true) {
 			memory = const_val_2.subtract(const_val_1);
@@ -208,7 +225,14 @@ public class calc {
 		set_memory = new BigDecimal(0);
 		isSet = false;
 
+		Log.d(TAG, "equal : " + memory.doubleValue());
+
 		return memory.doubleValue();
+	}
+
+	public void setDigitsLimit(int limitNum) {
+		digitNumLimit = limitNum;
+
 	}
 
 }
