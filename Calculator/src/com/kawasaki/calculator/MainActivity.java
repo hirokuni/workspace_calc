@@ -131,7 +131,7 @@ public class MainActivity extends Activity implements OnClickListener {
 				break;
 			case id.ButtonClear:
 				calc_init();
-				break;
+				return;
 			default:
 				// nothing to do
 			}
