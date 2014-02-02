@@ -10,6 +10,7 @@ public class calc {
 	private BigDecimal memory;
 	private BigDecimal tmp_memory_1;
 	private BigDecimal tmp_memory_2;
+	private BigDecimal set_memory;
 
 	private BigDecimal const_val_1;
 	private BigDecimal const_val_2;
@@ -18,6 +19,7 @@ public class calc {
 	private boolean isConstDivMode;
 	private boolean isConstSubMode;
 	private boolean isEqual;
+	private boolean isSet;
 
 	private int operator;
 	static final int NON = 0;
@@ -36,13 +38,18 @@ public class calc {
 		tmp_memory_1 = new BigDecimal(0);
 		reset_all_const_calc();
 		isEqual = false;
+		isSet = false;
 		tmp_memory_2 = new BigDecimal(0);
 		const_val_1 = new BigDecimal(0);
 		const_val_2 = new BigDecimal(0);
+		set_memory = new BigDecimal(0);
 	}
 
-	//when arithmeticEception happens, clear() must be called.
+	// when arithmeticEception happens, clear() must be called.
 	public void setVal(double i) {
+
+		set_memory = new BigDecimal(i);
+		isSet = true;
 
 		switch (operator) {
 		case NON:
@@ -95,14 +102,15 @@ public class calc {
 			return;
 		}
 
-		boolean isConstMode = isConstAddMode | isConstMulMode | isConstDivMode | isConstSubMode;
-		
+		boolean isConstMode = isConstAddMode | isConstMulMode | isConstDivMode
+				| isConstSubMode;
+
 		if (isConstMode == false) {
 			const_val_1 = new BigDecimal(i);
 		} else {
 			const_val_2 = new BigDecimal(i);
 		}
-		
+
 		return;
 	}
 
@@ -114,38 +122,63 @@ public class calc {
 		tmp_memory_2 = new BigDecimal(0);
 	}
 
-	private void reset_all_const_calc(){
+	private void reset_all_const_calc() {
 		isConstMulMode = false;
 		isConstAddMode = false;
 		isConstDivMode = false;
 		isConstSubMode = false;
 		isEqual = false;
 	}
-	
+
 	/*
 	 * Add
 	 */
 	public void setOperatorAdd() {
+
+		if (isEqual && isSet) {
+			BigDecimal tmp = set_memory;
+			clear();
+			tmp_memory_1 = tmp;
+		}
+
 		operator = ADD;
-		reset_all_const_calc();
 		addTmpVal();
+		reset_all_const_calc();
 	}
 
 	/*
 	 * Sub
 	 */
 	public void setOperatorSub() {
+		if (isEqual && isSet) {
+			BigDecimal tmp = set_memory;
+			clear();
+			tmp_memory_1 = tmp;
+		}
+
 		operator = SUB;
-		reset_all_const_calc();
 		addTmpVal();
+		reset_all_const_calc();
 	}
 
 	public void setOperatorMul() {
+		if (isEqual && isSet) {
+			BigDecimal tmp = set_memory;
+			clear();
+			tmp_memory_1 = tmp;
+		}
+
 		operator = MUL;
 		reset_all_const_calc();
 	}
 
 	public void setOperatorDiv() {
+		if (isEqual && isSet) {
+			BigDecimal tmp = set_memory;
+			clear();
+			tmp_memory_1 = tmp;
+		}
+		
 		operator = DIV;
 		reset_all_const_calc();
 	}
@@ -169,10 +202,12 @@ public class calc {
 			memory = memory.add(tmp_memory_2);
 			memory = memory.add(tmp_memory_1);
 		}
-		
+
 		tmp_memory_1 = new BigDecimal(0);
 		tmp_memory_2 = new BigDecimal(0);
-		
+		set_memory = new BigDecimal(0);
+		isSet = false;
+
 		return memory.doubleValue();
 	}
 

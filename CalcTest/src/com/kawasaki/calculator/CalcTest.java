@@ -523,13 +523,65 @@ public class CalcTest extends TestCase {
 			cal.setVal(0);
 			fail("no exception happned");
 		} catch (java.lang.ArithmeticException aex) {
-			//success. nothing to do
+			// success. nothing to do
 			return;
 		} catch (Exception ex) {
 			fail("ex : " + ex);
 		}
-		
+
 		fail("must not reach here!!");
+	}
+
+	// = で出た計算結果の後に、数値をInputして、
+	// =以外の演算が選択されると、前回の計算結果は破棄され、新しい計算が始まる。(加算)
+	public void test_previous_result_is_cleared_with_selecting_new_operation_add_executes_after_equal() {
+		cal.setVal(100);
+		cal.setOperatorSub();
+		cal.setVal(2);
+		assertEquals(98.0, cal.equal());
+		cal.setVal(5);
+		cal.setOperatorAdd();
+		cal.setVal(10);
+		assertEquals(15.0, cal.equal());
+	}
+
+	// = で出た計算結果の後に、数値をInputして、
+	// =以外の演算が選択されると、前回の計算結果は破棄され、新しい計算が始まる。(減算)
+	public void test_previous_result_is_cleared_with_selecting_new_operation_subtract_executes_after_equal() {
+		cal.setVal(100);
+		cal.setOperatorSub();
+		cal.setVal(2);
+		assertEquals(98.0, cal.equal());
+		cal.setVal(5);
+		cal.setOperatorSub();
+		cal.setVal(10);
+		assertEquals(-5.0, cal.equal());
+	}
+
+	// = で出た計算結果の後に、数値をInputして、
+	// =以外の演算が選択されると、前回の計算結果は破棄され、新しい計算が始まる。(乗算)
+	public void test_previous_result_is_cleared_with_selecting_new_operation_multiply_executes_after_equal() {
+		cal.setVal(100);
+		cal.setOperatorSub();
+		cal.setVal(2);
+		assertEquals(98.0, cal.equal());
+		cal.setVal(5);
+		cal.setOperatorMul();
+		cal.setVal(10);
+		assertEquals(50.0, cal.equal());
+	}
+
+	// = で出た計算結果の後に、数値をInputして、
+	// =以外の演算が選択されると、前回の計算結果は破棄され、新しい計算が始まる。(除算)
+	public void test_previous_result_is_cleared_with_selecting_new_operation_division_executes_after_equal() {
+		cal.setVal(100);
+		cal.setOperatorSub();
+		cal.setVal(2);
+		assertEquals(98.0, cal.equal());
+		cal.setVal(5);
+		cal.setOperatorDiv();
+		cal.setVal(10);
+		assertEquals(0.5, cal.equal());
 	}
 
 	// overflowにおいては 1e の表記を行う
@@ -537,8 +589,8 @@ public class CalcTest extends TestCase {
 		cal.setVal(2147483647);
 		cal.setOperatorAdd();
 		cal.setVal(2147483647);
-		
-		Log.i("test_over_flow", "over_flow_test : " + Double.toString(cal.equal()));
-		
+
+		Log.i("test_over_flow",
+				"over_flow_test : " + Double.toString(cal.equal()));
 	}
 }

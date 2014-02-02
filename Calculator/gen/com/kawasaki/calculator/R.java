@@ -26,24 +26,24 @@ public final class R {
     public static final class id {
         public static final int Button0=0x7f08000d;
         public static final int Button00=0x7f08000e;
+        public static final int Button1=0x7f080009;
+        public static final int Button2=0x7f08000a;
+        public static final int Button3=0x7f08000b;
+        public static final int Button4=0x7f080005;
+        public static final int Button5=0x7f080006;
+        public static final int Button6=0x7f080007;
+        public static final int Button7=0x7f080001;
+        public static final int Button8=0x7f080002;
+        public static final int Button9=0x7f080003;
+        public static final int ButtonChange=0x7f080011;
+        public static final int ButtonClear=0x7f080004;
         public static final int ButtonDiv=0x7f080008;
+        public static final int ButtonEqual=0x7f080012;
+        public static final int ButtonMinus=0x7f080010;
+        public static final int ButtonPlus=0x7f080013;
         public static final int ButtonPoint=0x7f08000f;
         public static final int ButtonX=0x7f08000c;
         public static final int action_settings=0x7f080014;
-        public static final int button1=0x7f080009;
-        public static final int button2=0x7f08000a;
-        public static final int button3=0x7f08000b;
-        public static final int button4=0x7f080005;
-        public static final int button5=0x7f080006;
-        public static final int button6=0x7f080007;
-        public static final int button7=0x7f080001;
-        public static final int button8=0x7f080002;
-        public static final int button9=0x7f080003;
-        public static final int buttonChange=0x7f080011;
-        public static final int buttonClear=0x7f080004;
-        public static final int buttonEqual=0x7f080012;
-        public static final int buttonMinus=0x7f080010;
-        public static final int buttonPlus=0x7f080013;
         public static final int display=0x7f080000;
     }
     public static final class layout {
