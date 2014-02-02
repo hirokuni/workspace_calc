@@ -584,6 +584,26 @@ public class CalcTest extends TestCase {
 		assertEquals(0.5, cal.equal());
 	}
 
+	/**
+	 * <pre>
+	 * 例 
+	 * 5 + 1 = 6
+	 *   + 2 = 8
+	 * </pre>
+	 */
+	public void test_add_number_with_result() {
+		cal.setVal(5);
+		cal.setOperatorAdd();
+		cal.setVal(1);
+		assertEquals(6.0, cal.equal());
+		cal.setOperatorAdd();
+		cal.setVal(2);
+		assertEquals(8.0, cal.equal());
+	}
+
+	//8/6, nonterminating decimal expansion, ArithmeticException
+	
+	
 	// overflowにおいては 1e の表記を行う
 	public void test_over_flow() {
 		cal.setVal(2147483647);
@@ -593,4 +613,6 @@ public class CalcTest extends TestCase {
 		Log.i("test_over_flow",
 				"over_flow_test : " + Double.toString(cal.equal()));
 	}
+	
+	
 }

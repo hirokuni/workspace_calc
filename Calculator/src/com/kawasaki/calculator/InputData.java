@@ -5,6 +5,7 @@ import android.util.Log;
 public class InputData {
 	private final String TAG = InputData.class.getSimpleName();
 	String setdata;
+	boolean isSetNumber;
 	
 	public InputData(){
 		init();
@@ -12,9 +13,18 @@ public class InputData {
 	
 	private void init() {
 		setdata = new String("0");
+		isSetNumber = false;
 	}
 	
 	public void set(int i) {
+		
+		if (isSetNumber) {
+			setdata = Integer.toString(i);
+			isSetNumber = false;
+			return;
+		}
+			
+		
 		if (i == 0) {
 			if (setdata.equalsIgnoreCase("0"))
 				return;
@@ -27,9 +37,17 @@ public class InputData {
 		
 		setdata += Integer.toString(i);
 	}
+	
+	/**
+	 * Set number forcibly
+	 */
+	public void setNumber(double num) {
+		setdata = Double.toString(num);
+		isSetNumber = true;
+	}
 
-	public int getNumberAndClear() {
-		int ret = Integer.valueOf(setdata);
+	public double getNumberAndClear() {
+		double ret = Double.valueOf(setdata);
 		init();
 		return ret;
 	}

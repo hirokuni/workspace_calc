@@ -130,10 +130,11 @@ public class MainActivity extends Activity implements OnClickListener {
 		//display result
 		if (button_id == id.ButtonEqual) {
 			cal.setVal(data.getNumberAndClear());
-			result.setText(Double.toString(cal.equal()));
+			double tmp = cal.equal();
+			result.setText(Double.toString(tmp));
+			data.setNumber(tmp);
 		} else
 			result.setText(displaied_number);
-
 	}
 
 	private void calc_init() {
