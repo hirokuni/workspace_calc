@@ -602,14 +602,14 @@ public class CalcTest extends TestCase {
 		assertEquals(8.0, cal.equal());
 	}
 
-	//8/6, nonterminating decimal expansion, ArithmeticException
+	// 8/6, nonterminating decimal expansion, ArithmeticException
 	public void test_non_terminating_decimal_exception_is_caught() {
 		cal.setVal(8);
 		cal.setOperatorDiv();
 		cal.setVal(6);
 		assertEquals(1.33333333333, cal.equal());
 	}
-	
+
 	// overflowにおいては 1e の表記を行う
 	public void test_over_flow() {
 		cal.setVal(2147483647);
@@ -619,6 +619,33 @@ public class CalcTest extends TestCase {
 		Log.i("test_over_flow",
 				"over_flow_test : " + Double.toString(cal.equal()));
 	}
-	
-	
+
+	/** 
+	 * <pre>
+	 * Step1. 3 + 3 + 3 
+	 * Step2. clear
+	 * Step3. 3
+	 * </pre>
+	 */
+	public void test_show_number_during_calc_for_add() {
+		//Step1
+		cal.setVal(3);
+		assertEquals(3.0,cal.getMemory());
+		cal.setOperatorAdd();
+		assertEquals(3.0,cal.getMemory());
+		cal.setVal(3);
+		assertEquals(3.0,cal.getMemory());
+		cal.setOperatorAdd();
+		assertEquals(6.0,cal.getMemory());
+		
+		//Step2
+		cal.clear();
+		assertEquals(0.0,cal.getMemory());
+		
+		//Step3
+		cal.setVal(3);
+		assertEquals(3.0,cal.getMemory());
+		
+	}
+
 }

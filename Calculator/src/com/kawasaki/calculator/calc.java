@@ -11,6 +11,7 @@ public class calc {
 	private BigDecimal tmp_memory_1;
 	private BigDecimal tmp_memory_2;
 	private BigDecimal set_memory;
+	/** @TODO いらない？？ */
 
 	private BigDecimal const_val_1;
 	private BigDecimal const_val_2;
@@ -35,6 +36,7 @@ public class calc {
 	}
 
 	public void clear() {
+		Log.i(TAG,"clear()");
 		operator = NON;
 		memory = new BigDecimal(0);
 		tmp_memory_1 = new BigDecimal(0);
@@ -48,7 +50,13 @@ public class calc {
 		digitNumLimit = 10;// default;
 	}
 
-	// when arithmeticEception happens, clear() must be called.
+	/**
+	 * Set value for for arithmetic operation when arithmeticEception happens,
+	 * clear() must be called.
+	 * 
+	 * @param i
+	 *            value
+	 */
 	public void setVal(double i) {
 		set_memory = new BigDecimal(i);
 		isSet = true;
@@ -228,6 +236,27 @@ public class calc {
 		Log.d(TAG, "equal : " + memory.doubleValue());
 
 		return memory.doubleValue();
+	}
+
+	public double getMemory() {
+		double res;
+
+		Log.i(TAG, "memory : " + memory);
+		Log.i(TAG, "tmp_memory_1 : " + tmp_memory_1);
+		Log.i(TAG, "tmp_memory_2 : " + tmp_memory_2);
+		
+		
+		if (memory.doubleValue() != 0) {
+			res = memory.doubleValue();
+		} else if (tmp_memory_1.doubleValue() != 0) {
+			res = tmp_memory_1.doubleValue();
+		} else if (tmp_memory_2.doubleValue() != 0) {
+			res = tmp_memory_2.doubleValue();
+		} else {
+			res = 0;
+		}
+
+		return res;
 	}
 
 	public void setDigitsLimit(int limitNum) {

@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnClickListener {
-	
 
 	private final String TAG = MainActivity.class.getSimpleName();
 	int button_ids[] = { R.id.Button0, R.id.Button1, R.id.Button2,
@@ -22,14 +21,11 @@ public class MainActivity extends Activity implements OnClickListener {
 			R.id.Button7, R.id.Button8, R.id.Button9, R.id.Button00,
 			R.id.ButtonEqual, R.id.ButtonPlus, R.id.ButtonMinus, R.id.ButtonX,
 			R.id.ButtonDiv, R.id.ButtonPoint, R.id.ButtonClear };
-
 	private Button buttons[];
 	private TextView result;
-	private calc cal;
-	private InputData data;
-	private final String MaxString = "0123456789.";
-	private final int digitsLimit = MaxString.length() - 1;
-	
+	private Adapter adapter;
+	private String MaxString = "0123456789.";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -45,9 +41,12 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		result = (TextView) findViewById(id.display);
 
-		
-		
-		calc_init();
+		adapter = new Adapter();
+		adapter.setMaxDigitNumber(MaxString.length() - 1);// arithmetic point is
+															// not counted.
+
+		setMaxTextSize(MaxString, result);
+
 		return;
 
 	}
@@ -68,96 +67,65 @@ public class MainActivity extends Activity implements OnClickListener {
 		// input data
 		switch (button_id) {
 		case id.Button0:
-			data.set(0);
+			adapter.setVal(0);
 			break;
 		case id.Button1:
-			data.set(1);
+			adapter.setVal(1);
 			break;
 		case id.Button2:
-			data.set(2);
+			adapter.setVal(2);
 			break;
 		case id.Button3:
-			data.set(3);
+			adapter.setVal(3);
 			break;
 		case id.Button4:
-			data.set(4);
+			adapter.setVal(4);
 			break;
 		case id.Button5:
-			data.set(5);
+			adapter.setVal(5);
 			break;
 		case id.Button6:
-			data.set(6);
+			adapter.setVal(6);
 			break;
 		case id.Button7:
-			data.set(7);
+			adapter.setVal(7);
 			break;
 		case id.Button8:
-			data.set(8);
+			adapter.setVal(8);
 			break;
 		case id.Button9:
-			data.set(9);
+			adapter.setVal(9);
 			break;
 		case id.ButtonPoint:
-			data.setPoint();
+			adapter.setPoint();
 			break;
 		case id.Button00:
-			data.set00();
+			adapter.set00();
+			break;
+		case id.ButtonPlus:
+			adapter.setOperator(Adapter.PLUS);
+			break;
+		case id.ButtonMinus:
+			adapter.setOperator(Adapter.MINUS);
+			break;
+		case id.ButtonDiv:
+			adapter.setOperator(Adapter.DIVISION);
+			break;
+		case id.ButtonX:
+			adapter.setOperator(Adapter.MULTIPLY);
+			break;
+		case id.ButtonClear:
+			adapter.clear();
+			break;
+		case id.ButtonEqual:
+			adapter.equal();
 			break;
 		default:
-			// nothing to do
+			Log.w(TAG,"unknown button id");
 		}
 
-		displaied_number = data.getString();
+		result.setText(adapter.getString());
 
-		try {
-			// operation
-			switch (button_id) {
-			case id.ButtonPlus:
-				displaied_number = data.getString();
-				cal.setVal(data.getNumberAndClear());
-				cal.setOperatorAdd();
-				break;
-			case id.ButtonMinus:
-				displaied_number = data.getString();
-				cal.setVal(data.getNumberAndClear());
-				cal.setOperatorSub();
-				break;
-			case id.ButtonDiv:
-				displaied_number = data.getString();
-				cal.setVal(data.getNumberAndClear());
-				cal.setOperatorDiv();
-				break;
-			case id.ButtonX:
-				displaied_number = data.getString();
-				cal.setVal(data.getNumberAndClear());
-				cal.setOperatorMul();
-				break;
-			case id.ButtonClear:
-				calc_init();
-				return;
-			default:
-				// nothing to do
-			}
-			
-			// display result
-			if (button_id == id.ButtonEqual) {
-				cal.setVal(data.getNumberAndClear());
-				double tmp = cal.equal();
-				result.setText(data.remove_point_0(Double.toString(tmp)));
-				data.setNumber(tmp);
-			} else
-				result.setText(displaied_number);
-		} catch (java.lang.ArithmeticException aex) {
-			Log.w(TAG, aex);
-			result.setText("Error");
-		}
-	}
-
-	private void calc_init() {
-		cal = new calc();
-		cal.setDigitsLimit(digitsLimit);
-		result.setText("0");
-		data = new InputData();
 	}
 
 	protected static final int MAX_FONT_SIZE = 100;
@@ -165,9 +133,9 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
-		setMaxTextSize(MaxString, result);
+		// setMaxTextSize(MaxString, result);
 	}
-	
+
 	/*
 	 * Sample : http://mesubuta.blog.jp/archives/2323960.html
 	 */
@@ -178,7 +146,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		 */
 		DisplayMetrics mmetrics = new DisplayMetrics();
 		Paint p = new Paint();
-		
+
 		getWindowManager().getDefaultDisplay().getMetrics(mmetrics);
 		final float density = mmetrics.scaledDensity;
 		for (int i = MAX_FONT_SIZE; i > MIN_FONT_SIZE; i = i - 2) {
