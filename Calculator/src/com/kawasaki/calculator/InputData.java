@@ -12,6 +12,8 @@ public class InputData {
 		init();
 	}
 
+	
+	
 	private void init() {
 		setdata = new String("0");
 		isSetNumber = false;

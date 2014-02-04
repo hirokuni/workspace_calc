@@ -42,7 +42,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		result = (TextView) findViewById(id.display);
 
 		adapter = new Adapter();
-		adapter.setMaxDigitNumber(MaxString.length() - 1);// arithmetic point is
+		adapter.setMaxDigitNumber(1000);// arithmetic point is
 															// not counted.
 
 		setMaxTextSize(MaxString, result);
@@ -54,7 +54,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
+		//getMenuInflater().inflate(R.menu.main, menu);
 
 		return true;
 	}

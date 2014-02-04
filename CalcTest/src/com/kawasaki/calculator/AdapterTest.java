@@ -1,6 +1,12 @@
 package com.kawasaki.calculator;
 
+import de.congrace.exp4j.Calculable;
+import de.congrace.exp4j.ExpressionBuilder;
+import de.congrace.exp4j.UnknownFunctionException;
+import de.congrace.exp4j.UnparsableExpressionException;
 import android.test.AndroidTestCase;
+import android.util.Log;
+
 
 public class AdapterTest extends AndroidTestCase {
 	
@@ -43,6 +49,134 @@ public class AdapterTest extends AndroidTestCase {
 		//Step3
 		adapter.setVal(3);
 		assertEquals("3",adapter.getString());
+	}
+	
+	/**
+	 *  5 x 3 + 3 / 2
+	 */
+	public void test_calc_4_calc_pattern_1() {
+		adapter.setVal(5);
+		assertEquals("5",adapter.getString());
+		
+		adapter.setOperator(Adapter.MULTIPLY);
+		assertEquals("5",adapter.getString());
+		
+		adapter.setVal(3);
+		assertEquals("3",adapter.getString());
+		
+		adapter.setOperator(Adapter.PLUS);
+		assertEquals("15",adapter.getString());
+
+		adapter.setVal(3);
+		assertEquals("3",adapter.getString());
+		
+		adapter.setOperator(Adapter.DIVISION);
+		assertEquals("3",adapter.getString());
+		
+		adapter.setVal(2);
+		assertEquals("2",adapter.getString());
+		
+		adapter.equal();
+		assertEquals("16.5",adapter.getString());
+	}
+	
+	/**
+	 *  5 / 3 + 3 x 2
+	 */
+	public void test_calc_4_calc_pattern_2() {
+		adapter.setVal(5);
+		assertEquals("5",adapter.getString());
+		
+		adapter.setOperator(Adapter.DIVISION);
+		assertEquals("5",adapter.getString());
+		
+		adapter.setVal(3);
+		assertEquals("3",adapter.getString());
+		
+		adapter.setOperator(Adapter.PLUS);
+		assertEquals("1.6666666666",adapter.getString());
+
+		adapter.setVal(3);
+		assertEquals("3",adapter.getString());
+		
+		adapter.setOperator(Adapter.MULTIPLY);
+		assertEquals("3",adapter.getString());
+		
+		adapter.setVal(2);
+		assertEquals("2",adapter.getString());
+		
+		adapter.equal();
+		assertEquals("7.6666666666",adapter.getString());
+	}
+	
+	/**
+	 *  5 / 2　x 2 + 3 x 2
+	 */
+	public void test_calc_4_calc_pattern_3() {
+		adapter.setVal(5);
+		assertEquals("5",adapter.getString());
+		
+		adapter.setOperator(Adapter.DIVISION);
+		assertEquals("5",adapter.getString());
+		
+		adapter.setVal(2);
+		assertEquals("2",adapter.getString());
+		
+		adapter.setOperator(Adapter.MULTIPLY);
+		assertEquals("2.5",adapter.getString());
+		
+		adapter.setVal(2);
+		assertEquals("2",adapter.getString());
+			
+		adapter.setOperator(Adapter.PLUS);
+		assertEquals("5",adapter.getString());
+
+		adapter.setVal(3);
+		assertEquals("3",adapter.getString());
+		
+		adapter.setOperator(Adapter.MULTIPLY);
+		assertEquals("3",adapter.getString());
+		
+		adapter.setVal(2);
+		assertEquals("2",adapter.getString());
+		
+		adapter.equal();
+		assertEquals("11",adapter.getString());
+	}
+	
+	/**
+	 *  5 / 2　x 2 - 3 x 2
+	 */
+	public void test_calc_4_calc_pattern_4() {
+		adapter.setVal(5);
+		assertEquals("5",adapter.getString());
+		
+		adapter.setOperator(Adapter.DIVISION);
+		assertEquals("5",adapter.getString());
+		
+		adapter.setVal(2);
+		assertEquals("2",adapter.getString());
+		
+		adapter.setOperator(Adapter.MULTIPLY);
+		assertEquals("2.5",adapter.getString());
+		
+		adapter.setVal(2);
+		assertEquals("2",adapter.getString());
+			
+		adapter.setOperator(Adapter.MINUS);
+		assertEquals("5",adapter.getString());
+
+		adapter.setVal(3);
+		assertEquals("3",adapter.getString());
+		
+		adapter.setOperator(Adapter.MULTIPLY);
+		assertEquals("-3",adapter.getString());
+		
+		adapter.setVal(2);
+		assertEquals("2",adapter.getString());
+		
+		adapter.equal();
+		assertEquals("-1",adapter.getString());
 	}
 	
 	//小数点追加
@@ -92,8 +226,31 @@ public class AdapterTest extends AndroidTestCase {
 		adapter.equal();
 		assertEquals("Error",adapter.getString());
 	}
+
+	public void test_() {
+		double e = 3*10+2-5/2.5;
+		try {
+			Calculable calc = new ExpressionBuilder("002*3-2").build();
+			Log.i("test","calc = " + Double.toString(calc.calculate()));
+		} catch (UnknownFunctionException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (UnparsableExpressionException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
-	//最大桁数設定
+		Log.i("test", "test : " + Double.toString(e));
+	}
+		
+	//小数点以下の数値いれて、11桁にする
 	
+	//最大桁数設定
+	/*
+	01-26 09:43:59.041: W/Adapter(20864): Recalculation 数式 : 1*15*3/6
+	01-26 09:43:59.041: W/Adapter(20864): Recalculation 計算 : 2.5
+	01-26 09:43:59.041: W/Adapter(20864): Recalculation 検算 : 7.5
+
+	 */
 
 }

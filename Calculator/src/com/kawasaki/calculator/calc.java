@@ -1,33 +1,31 @@
 package com.kawasaki.calculator;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
+import java.util.EmptyStackException;
+
+import de.congrace.exp4j.Calculable;
+import de.congrace.exp4j.ExpressionBuilder;
+import de.congrace.exp4j.UnknownFunctionException;
+import de.congrace.exp4j.UnparsableExpressionException;
 
 import android.util.Log;
 
 public class calc {
 	private static String TAG = calc.class.getSimpleName();
 
-	private BigDecimal memory;
-	private BigDecimal tmp_memory_1;
-	private BigDecimal tmp_memory_2;
-	private BigDecimal set_memory;
-	/** @TODO いらない？？ */
+	private StringBuilder mathematical_fomula;
+	private double memory_d;
 
-	private BigDecimal const_val_1;
-	private BigDecimal const_val_2;
-	private boolean isConstMulMode;
-	private boolean isConstAddMode;
-	private boolean isConstDivMode;
-	private boolean isConstSubMode;
-	private boolean isEqual;
-	private boolean isSet;
+	private String lastOperator;
+	private String lastNumber;
+	private String constCalcNum;
+	private String lastResultNumber;
 
-	private int operator;
-	static final int NON = 0;
-	static final int ADD = 1;
-	static final int SUB = 2;
-	static final int DIV = 3;
-	static final int MUL = 4;
+	private static final String PLUS = "+";
+	private static final String SUB = "-";
+	private static final String DIV = "/";
+	private static final String MUL = "*";
 
 	static int digitNumLimit;
 
@@ -36,227 +34,161 @@ public class calc {
 	}
 
 	public void clear() {
-		Log.i(TAG,"clear()");
-		operator = NON;
-		memory = new BigDecimal(0);
-		tmp_memory_1 = new BigDecimal(0);
-		reset_all_const_calc();
-		isEqual = false;
-		isSet = false;
-		tmp_memory_2 = new BigDecimal(0);
-		const_val_1 = new BigDecimal(0);
-		const_val_2 = new BigDecimal(0);
-		set_memory = new BigDecimal(0);
+		Log.i(TAG, "clear()");
+		mathematical_fomula = new StringBuilder();
+		memory_d = 0;
 		digitNumLimit = 10;// default;
+		lastOperator = new String();
+		lastNumber = new String();
+		constCalcNum = new String();
+		lastResultNumber = new String();
 	}
 
-	/**
-	 * Set value for for arithmetic operation when arithmeticEception happens,
-	 * clear() must be called.
-	 * 
-	 * @param i
-	 *            value
-	 */
 	public void setVal(double i) {
-		set_memory = new BigDecimal(i);
-		isSet = true;
-
-		switch (operator) {
-		case NON:
-			Log.d(TAG, "setVal NON : " + i);
-			memory = new BigDecimal(i);
-			reset_all_const_calc();
-			return;
-		case ADD:
-			Log.d(TAG, "setVal Add : " + i);
-			tmp_memory_1 = new BigDecimal(i);
-			if (isEqual == true) {
-				isConstAddMode = true;
-			}
-			break;
-		case SUB:
-			Log.d(TAG, "setVal Sub : " + i);
-			tmp_memory_1 = new BigDecimal(-i);
-
-			if (isEqual == true) {
-				isConstSubMode = true;
-			}
-			break;
-		case MUL:
-			Log.d(TAG, "setVal Mul : " + i);
-
-			if (tmp_memory_2.doubleValue() != 0.0) {
-				tmp_memory_2 = tmp_memory_2.multiply(new BigDecimal(i));
-			} else if (tmp_memory_1.doubleValue() != 0.0) {
-				tmp_memory_2 = tmp_memory_1.multiply(new BigDecimal(i));
-				tmp_memory_1 = new BigDecimal(0);
-			} else {
-				memory = memory.multiply(new BigDecimal(i));
-			}
-
-			if (isEqual == true) {
-				isConstMulMode = true;
-			}
-			break;
-		case DIV:
-			Log.d(TAG, "setVal Div : " + i);
-
-			/*
-			 * NOTE : 銀行の計算において、小数点以下は切り捨てている場合が多いようだ （利息計算で切り上げる場合、違法の危険性がある）
-			 * TODO 四捨五入、切り捨てを計算上、いつどちらを設定するかをClearにする
-			 */
-			if (tmp_memory_2.doubleValue() != 0.0) {
-				tmp_memory_2 = tmp_memory_2.divide(new BigDecimal(i),
-						digitNumLimit, BigDecimal.ROUND_DOWN);
-			} else if (tmp_memory_1.doubleValue() != 0.0) {
-				tmp_memory_2 = tmp_memory_1.divide(new BigDecimal(i),
-						digitNumLimit, BigDecimal.ROUND_DOWN);
-				tmp_memory_1 = new BigDecimal(0);
-			} else {
-				memory = memory.divide(new BigDecimal(i), digitNumLimit,
-						BigDecimal.ROUND_DOWN);
-			}
-
-			if (isEqual == true) {
-				isConstDivMode = true;
-			}
-			break;
-		default:
-			Log.w(TAG, "illegal operator");
-			return;
-		}
-
-		boolean isConstMode = isConstAddMode | isConstMulMode | isConstDivMode
-				| isConstSubMode;
-
-		if (isConstMode == false) {
-			const_val_1 = new BigDecimal(i);
-		} else {
-			const_val_2 = new BigDecimal(i);
-		}
-
+		mathematical_fomula.append(i);
+		lastNumber = Double.toString(i);
 		return;
 	}
 
-	private void addTmpVal() {
-		memory = memory.add(tmp_memory_1);
-		tmp_memory_1 = new BigDecimal(0);
+	private void setMathematicalFomula(String operator) {
 
-		memory = memory.add(tmp_memory_2);
-		tmp_memory_2 = new BigDecimal(0);
+		if (mathematical_fomula.length() > 0)
+			if ((mathematical_fomula.charAt(mathematical_fomula.length() - 1) == '+')
+					|| (mathematical_fomula
+							.charAt(mathematical_fomula.length() - 1) == '-')
+					|| (mathematical_fomula
+							.charAt(mathematical_fomula.length() - 1) == '*')
+					|| (mathematical_fomula
+							.charAt(mathematical_fomula.length() - 1) == '/'))
+
+			{
+				mathematical_fomula
+						.deleteCharAt(mathematical_fomula.length() - 1);
+			}
+
+		if (mathematical_fomula.length() > 0)
+			mathematical_fomula.append(operator);
+		else
+			mathematical_fomula.append(lastResultNumber + operator);
 	}
 
-	private void reset_all_const_calc() {
-		isConstMulMode = false;
-		isConstAddMode = false;
-		isConstDivMode = false;
-		isConstSubMode = false;
-		isEqual = false;
-	}
-
-	/*
-	 * Add
-	 */
 	public void setOperatorAdd() {
-
-		if (isEqual && isSet) {
-			BigDecimal tmp = set_memory;
-			clear();
-			tmp_memory_1 = tmp;
-		}
-
-		operator = ADD;
-		addTmpVal();
-		reset_all_const_calc();
+		setMathematicalFomula(PLUS);
+		lastOperator = PLUS;
 	}
 
-	/*
-	 * Sub
-	 */
 	public void setOperatorSub() {
-		if (isEqual && isSet) {
-			BigDecimal tmp = set_memory;
-			clear();
-			tmp_memory_1 = tmp;
-		}
-
-		operator = SUB;
-		addTmpVal();
-		reset_all_const_calc();
+		setMathematicalFomula(SUB);
+		lastOperator = SUB;
 	}
 
 	public void setOperatorMul() {
-		if (isEqual && isSet) {
-			BigDecimal tmp = set_memory;
-			clear();
-			tmp_memory_1 = tmp;
-		}
-
-		operator = MUL;
-		reset_all_const_calc();
+		setMathematicalFomula(MUL);
+		lastOperator = MUL;
 	}
 
 	public void setOperatorDiv() {
-		if (isEqual && isSet) {
-			BigDecimal tmp = set_memory;
-			clear();
-			tmp_memory_1 = tmp;
-		}
-
-		operator = DIV;
-		reset_all_const_calc();
+		setMathematicalFomula(DIV);
+		lastOperator = DIV;
 	}
 
-	public double equal() {
-		isEqual = true;
+	private double executeCalc(String str) throws UnknownFunctionException,
+			UnparsableExpressionException {
+		double ret;
 
-		if (isConstMulMode == true) {
-			memory = const_val_2.multiply(const_val_1);
-			isConstMulMode = false;
-		} else if (isConstAddMode == true) {
-			memory = const_val_2.add(const_val_1);
-			isConstAddMode = false;
-		} else if (isConstDivMode == true) {
-			memory = const_val_2.divide(const_val_1, digitNumLimit,
-					BigDecimal.ROUND_DOWN);
-			isConstDivMode = false;
-		} else if (isConstSubMode == true) {
-			memory = const_val_2.subtract(const_val_1);
-			isConstDivMode = false;
-		} else {
-			memory = memory.add(tmp_memory_2);
-			memory = memory.add(tmp_memory_1);
-		}
+		Calculable calc = new ExpressionBuilder(str).build();
+		BigDecimal calcB = new BigDecimal(calc.calculate());
+		calcB = calcB.setScale(10, BigDecimal.ROUND_DOWN);
 
-		tmp_memory_1 = new BigDecimal(0);
-		tmp_memory_2 = new BigDecimal(0);
-		set_memory = new BigDecimal(0);
-		isSet = false;
+		ret = calcB.doubleValue();
 
-		Log.d(TAG, "equal : " + memory.doubleValue());
+		Log.i(TAG, "数式 : " + str.toString());
+		Log.i(TAG, "結果 : " + ret);
 
-		return memory.doubleValue();
+		return ret;
 	}
 
-	public double getMemory() {
-		double res;
+	public double equal() throws UnknownFunctionException,
+			UnparsableExpressionException {
 
-		Log.i(TAG, "memory : " + memory);
-		Log.i(TAG, "tmp_memory_1 : " + tmp_memory_1);
-		Log.i(TAG, "tmp_memory_2 : " + tmp_memory_2);
-		
-		
-		if (memory.doubleValue() != 0) {
-			res = memory.doubleValue();
-		} else if (tmp_memory_1.doubleValue() != 0) {
-			res = tmp_memory_1.doubleValue();
-		} else if (tmp_memory_2.doubleValue() != 0) {
-			res = tmp_memory_2.doubleValue();
+		String tmp = mathematical_fomula.toString();
+
+		if (!tmp.contains(PLUS) && !tmp.contains(DIV) && !tmp.contains(MUL)
+				&& !tmp.contains(SUB)) {
+			// 定数計算（定数加算・減算・乗算・除算）
+			mathematical_fomula.append(lastOperator);
+			mathematical_fomula.append(constCalcNum);
 		} else {
-			res = 0;
+			// 通常計算
+			constCalcNum = lastNumber;
 		}
 
-		return res;
+		memory_d = executeCalc(mathematical_fomula.toString());
+		mathematical_fomula = new StringBuilder();
+		lastResultNumber = Double.toString(memory_d);
+
+		return memory_d;
+	}
+
+	// if the calculation can't return current result, then
+	// UnknownFunctionExcetion will be returned.
+	public double getMemory() throws UnknownFunctionException {
+		double ret = 0.0;
+		String str = mathematical_fomula.toString();
+
+		if (str.length() < 1)
+			return ret;
+
+		if ((str.charAt(str.length() - 1) == '+')
+				|| (str.charAt(str.length() - 1) == '-')) {
+			str = str.substring(0, str.length() - 1);
+			try {
+				ret = executeCalc(str);
+			} catch (UnknownFunctionException e) {
+				e.printStackTrace();
+			} catch (UnparsableExpressionException e) {
+				e.printStackTrace();
+			} catch (EmptyStackException esex) {
+				esex.printStackTrace();
+				str = str.substring(0, str.length() - 1);
+			}
+		} else if ((str.charAt(str.length() - 1) == '*')
+				|| (str.charAt(str.length() - 1) == '/')) {
+
+			for (int i = str.length() - 2; i > 0; i--) {
+				if ((str.charAt(i) == '+') || (str.charAt(i) == '-')) {
+					try {
+						ret = executeCalc(str.substring(i, str.length() - 1));
+						return ret;
+					} catch (UnparsableExpressionException e) {
+						e.printStackTrace();
+						throw new UnknownFunctionException(str);
+					}
+				}
+			}
+
+			try {
+				ret = executeCalc(str.substring(0, str.length() - 1));
+			} catch (UnparsableExpressionException e) {
+				e.printStackTrace();
+				throw new UnknownFunctionException(str);
+			}
+
+		} else {
+
+			if (!str.contains(PLUS) && !str.contains(DIV) && !str.contains(MUL)
+					&& !str.contains(SUB))
+				try {
+					ret = executeCalc(str);
+				} catch (UnparsableExpressionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			else
+				throw new UnknownFunctionException(str);
+		}
+
+		return ret;
 	}
 
 	public void setDigitsLimit(int limitNum) {
