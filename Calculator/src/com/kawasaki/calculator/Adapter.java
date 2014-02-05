@@ -1,6 +1,7 @@
 package com.kawasaki.calculator;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.EmptyStackException;
 
 import de.congrace.exp4j.Calculable;
@@ -23,7 +24,7 @@ public class Adapter {
 
 	StringBuilder sb;
 
-	private final static String DEFUALT_MAX_STRING = "01234567890.";
+	private final static String DEFUALT_MAX_STRING = "0123456789.";
 
 	private String MaxString = DEFUALT_MAX_STRING;
 	private int digitsLimit = MaxString.length() - 1;
@@ -38,7 +39,7 @@ public class Adapter {
 	}
 
 	private void calc_init() {
-		cal = new calc();
+		cal = new calc(digitsLimit);
 		display = new String("0");
 		data = new InputData();
 		setMaxDigitNumber(digitsLimit);
@@ -88,8 +89,14 @@ public class Adapter {
 	private void setDisplay() {
 	
 			try {
-				display = data.remove_point_0(Double.toString(cal.getMemory()));
+				
+				String ret = prune_data(cal.getMemory());
+				display = data.remove_point_0(ret);
+				//display = data.remove_point_0(Double.toString(cal.getMemory()));
 			} catch (UnknownFunctionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (UnparsableExpressionException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -143,13 +150,53 @@ public class Adapter {
 
 	}
 
+	private String prune_data(double dval) throws UnknownFunctionException, UnparsableExpressionException{
+		String ret = new String("0");
+		BigDecimal bd = new BigDecimal(dval);
+		String plainStr = bd.toPlainString();
+		
+		if (plainStr.length() <= digitsLimit) {
+			ret = plainStr;
+		} else {
+		  	ret = Double.toString(dval);
+		  	if (ret.length() > digitsLimit) {
+		  		DecimalFormat df = new DecimalFormat("0.000000E0");
+		  		ret = df.format(dval);
+		  	}
+		  		
+		}
+		
+		return ret;
+	}
+	
 	public void equal() {
 		double tmp = 0;
 		try {
+			String ret;
+			
 			cal.setVal(data.getNumberAndClear());
 			tmp = cal.equal();
 			
-			display = data.remove_point_0(Double.toString(tmp));
+			/*
+			BigDecimal bd = new BigDecimal(tmp);
+			String plainStr = bd.toPlainString();
+			
+			
+			if (plainStr.length() <= digitsLimit) {
+				ret = plainStr;
+			} else {
+			  	ret = Double.toString(tmp);
+			  	if (ret.length() > digitsLimit) {
+			  		DecimalFormat df = new DecimalFormat("0.000000E0");
+			  		ret = df.format(tmp);
+			  	}
+			  		
+			}
+			*/
+			
+			ret = prune_data(tmp);
+			
+			display = data.remove_point_0(ret);
 			data.setNumber(tmp);
 		}catch (java.lang.ArithmeticException aex) {
 			Log.w(TAG, aex);

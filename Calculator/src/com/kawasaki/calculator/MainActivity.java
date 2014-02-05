@@ -43,9 +43,6 @@ public class MainActivity extends Activity implements OnClickListener {
 		result = (TextView) findViewById(id.display);
 
 		adapter = new Adapter();
-		
-
-		
 
 		return;
 
@@ -132,9 +129,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
-		// setMaxTextSize(MaxString, result);
 		result.setBackgroundColor(Color.BLACK);
-		
 		result.setBackgroundColor(Color.WHITE);
 		result.setTextColor(Color.BLACK);
 		

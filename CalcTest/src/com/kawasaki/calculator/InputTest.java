@@ -1,5 +1,11 @@
 package com.kawasaki.calculator;
 
+import java.math.BigDecimal;
+
+import de.congrace.exp4j.Calculable;
+import de.congrace.exp4j.ExpressionBuilder;
+import de.congrace.exp4j.UnknownFunctionException;
+import de.congrace.exp4j.UnparsableExpressionException;
 import android.test.AndroidTestCase;
 
 public class InputTest extends AndroidTestCase {
@@ -190,6 +196,15 @@ public class InputTest extends AndroidTestCase {
 		data.set00();
 		
 		assertEquals("12.30", data.getString());
+	}
+	
+	//0.001入力
+	public void test_point_input_1() throws UnknownFunctionException, UnparsableExpressionException {
+		data.set(0);
+		data.setPoint();
+		data.set(0);
+		data.set(1);
+		assertEquals("0.01", data.getString());
 	}
 	
 	//小数点以下が0のみの場合、小数点以下の0は表示されない

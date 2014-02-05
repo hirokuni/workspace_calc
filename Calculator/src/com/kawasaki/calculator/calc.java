@@ -21,16 +21,20 @@ public class calc {
 	private String lastNumber;
 	private String constCalcNum;
 	private String lastResultNumber;
+	private int mScale;
 
 	private static final String PLUS = "+";
 	private static final String SUB = "-";
 	private static final String DIV = "/";
 	private static final String MUL = "*";
 
-	
+	public void setScale(int scale){
+		mScale = scale;
+	}
 
-	public calc() {
+	public calc(int scale) {
 		clear();
+		mScale = scale + 1;
 	}
 
 	public void clear() {
@@ -42,6 +46,7 @@ public class calc {
 		lastNumber = new String();
 		constCalcNum = new String();
 		lastResultNumber = new String();
+		
 	}
 
 	public void setVal(double i) {
@@ -97,15 +102,19 @@ public class calc {
 		double ret;
 
 		Calculable calc = new ExpressionBuilder(str).build();
+		return calc.calculate();
+	    /*
 		BigDecimal calcB = new BigDecimal(calc.calculate());
-		calcB = calcB.setScale(10, BigDecimal.ROUND_DOWN);
-
+		//calcB = calcB.setScale(mScale, BigDecimal.ROUND_DOWN);
+		calcB = calcB.setScale(10,BigDecimal.ROUND_DOWN);
+		
 		ret = calcB.doubleValue();
 
 		Log.i(TAG, "数式 : " + str.toString());
 		Log.i(TAG, "結果 : " + ret);
 
 		return ret;
+		*/
 	}
 
 	public double equal() throws UnknownFunctionException,

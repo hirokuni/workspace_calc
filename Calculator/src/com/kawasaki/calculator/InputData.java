@@ -66,10 +66,7 @@ public class InputData {
 	}
 
 	public String getString() {
-		Log.i(TAG, "getString# setdata  " + setdata);
-
-		setdata = remove_point_0(setdata);
-		
+		Log.i(TAG, "getString# setdata  " + setdata);		
 		return setdata;
 	}
 	

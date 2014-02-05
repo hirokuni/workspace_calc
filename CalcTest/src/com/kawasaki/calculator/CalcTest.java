@@ -10,7 +10,7 @@ public class CalcTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		cal = new calc();
+		cal = new calc(10);
 	}
 
 	protected void tearDown() throws Exception {
@@ -669,7 +669,7 @@ public class CalcTest extends TestCase {
 		cal.setVal(8);
 		cal.setOperatorDiv();
 		cal.setVal(6);
-		assertEquals(1.3333333333, cal.equal());
+		assertEquals(1.3333333333333333, cal.equal());
 	}
 
 	// overflowにおいては 1e の表記を行う
