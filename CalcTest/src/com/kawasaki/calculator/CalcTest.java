@@ -11,7 +11,6 @@ public class CalcTest extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		cal = new calc();
-		cal.setDigitsLimit("0123456789.".length());
 	}
 
 	protected void tearDown() throws Exception {

@@ -19,6 +19,7 @@
         android:orientation="horizontal" >
 
         <Button
+            android:background="@drawable/button_stateful"
             android:id="@+id/Button7"
             android:layout_width="80dip"
             android:layout_height="80dip"
@@ -28,6 +29,7 @@
         </Button>
 
         <Button
+            android:background="@drawable/button_stateful"
             android:id="@+id/Button8"
             android:layout_width="80dip"
             android:layout_height="80dip"
@@ -37,6 +39,7 @@
         </Button>
 
         <Button
+            android:background="@drawable/button_stateful"
             android:id="@+id/Button9"
             android:layout_width="80dip"
             android:layout_height="80dip"
@@ -46,6 +49,7 @@
         </Button>
 
         <Button
+            android:background="@drawable/button_stateful"
             android:id="@+id/ButtonClear"
             android:layout_width="80dip"
             android:layout_height="80dip"
@@ -61,6 +65,7 @@
         android:orientation="horizontal" >
 
         <Button
+            android:background="@drawable/button_stateful"
             android:id="@+id/Button4"
             android:layout_width="80dip"
             android:layout_height="80dip"
@@ -70,6 +75,7 @@
         </Button>
 
         <Button
+            android:background="@drawable/button_stateful"
             android:id="@+id/Button5"
             android:layout_width="80dip"
             android:layout_height="80dip"
@@ -79,6 +85,7 @@
         </Button>
 
         <Button
+            android:background="@drawable/button_stateful"
             android:id="@+id/Button6"
             android:layout_width="80dip"
             android:layout_height="80dip"
@@ -88,6 +95,7 @@
         </Button>
 
         <Button
+            android:background="@drawable/button_stateful"
             android:id="@+id/ButtonDiv"
             android:layout_width="80dip"
             android:layout_height="80dip"
@@ -102,6 +110,7 @@
         android:orientation="horizontal" >
 
         <Button
+            android:background="@drawable/button_stateful"
             android:id="@+id/Button1"
             android:layout_width="80dip"
             android:layout_height="80dip"
@@ -111,6 +120,7 @@
         </Button>
 
         <Button
+            android:background="@drawable/button_stateful"
             android:id="@+id/Button2"
             android:layout_width="80dip"
             android:layout_height="80dip"
@@ -120,6 +130,7 @@
         </Button>
 
         <Button
+            android:background="@drawable/button_stateful"
             android:id="@+id/Button3"
             android:layout_width="80dip"
             android:layout_height="80dip"
@@ -129,6 +140,7 @@
         </Button>
 
         <Button
+            android:background="@drawable/button_stateful"
             android:id="@+id/ButtonX"
             android:layout_width="80dip"
             android:layout_height="80dip"
@@ -143,6 +155,7 @@
         android:orientation="horizontal" >
 
         <Button
+            android:background="@drawable/button_stateful"
             android:id="@+id/Button0"
             android:layout_width="80dip"
             android:layout_height="80dip"
@@ -151,6 +164,7 @@
             android:textSize="40dip" />
 
         <Button
+            android:background="@drawable/button_stateful"
             android:id="@+id/Button00"
             android:layout_width="80dip"
             android:layout_height="80dip"
@@ -159,6 +173,7 @@
             android:textSize="40dip" />
 
         <Button
+            android:background="@drawable/button_stateful"
             android:id="@+id/ButtonPoint"
             android:layout_width="80dip"
             android:layout_height="80dip"
@@ -167,6 +182,7 @@
             android:textSize="40dip" />
 
         <Button
+            android:background="@drawable/button_stateful"
             android:id="@+id/ButtonMinus"
             android:layout_width="80dip"
             android:layout_height="80dip"
@@ -181,6 +197,7 @@
         android:orientation="horizontal" >
 
         <Button
+            android:background="@drawable/button_stateful"
             android:id="@+id/ButtonEqual"
             android:layout_width="160dip"
             android:layout_height="80dip"
@@ -189,6 +206,7 @@
             android:textSize="40dip" />
 
         <Button
+            android:background="@drawable/button_stateful"
             android:id="@+id/ButtonPlus"
             android:layout_width="160dip"
             android:layout_height="80dip"

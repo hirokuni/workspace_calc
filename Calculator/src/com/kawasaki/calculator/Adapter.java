@@ -21,10 +21,9 @@ public class Adapter {
 	private InputData data;
 	private calc cal;
 
-	private String calcStr;
 	StringBuilder sb;
 
-	private final static String DEFUALT_MAX_STRING = "01234567890123456789101234567890123456789.";
+	private final static String DEFUALT_MAX_STRING = "01234567890.";
 
 	private String MaxString = DEFUALT_MAX_STRING;
 	private int digitsLimit = MaxString.length() - 1;
@@ -35,13 +34,11 @@ public class Adapter {
 
 	public void setMaxDigitNumber(int limit) {
 		digitsLimit = limit;
-		cal.setDigitsLimit(limit);
 		data.setDigitNumberLimit(limit);
 	}
 
 	private void calc_init() {
 		cal = new calc();
-		cal.setDigitsLimit(digitsLimit);
 		display = new String("0");
 		data = new InputData();
 		setMaxDigitNumber(digitsLimit);
@@ -151,6 +148,7 @@ public class Adapter {
 		try {
 			cal.setVal(data.getNumberAndClear());
 			tmp = cal.equal();
+			
 			display = data.remove_point_0(Double.toString(tmp));
 			data.setNumber(tmp);
 		}catch (java.lang.ArithmeticException aex) {
@@ -171,8 +169,7 @@ public class Adapter {
 		}
 
 		
-		//recalculation
-		Log.i(TAG, "mathematical expression : " + sb.toString());
+		//検算
 		try {
 			Calculable calc = new ExpressionBuilder(sb.toString()).build();
 			BigDecimal calcB = new BigDecimal(calc.calculate());
@@ -181,22 +178,20 @@ public class Adapter {
 			BigDecimal tmpB = new BigDecimal(tmp);
 			tmpB = tmpB.setScale(10,BigDecimal.ROUND_DOWN);
 			if (tmpB.doubleValue() != calcB.doubleValue()) {
-				Log.w(TAG, "Recalculation 数式 : " + sb.toString());
-				Log.w(TAG, "Recalculation 計算 : " + tmpB.doubleValue());
-				Log.w(TAG, "Recalculation 検算 : " + calcB.doubleValue());
+				Log.w(TAG, "検算 数式 : " + sb.toString());
+				Log.w(TAG, "計算結果  : " + tmpB.doubleValue());
+				Log.w(TAG, "検算結果  : " + calcB.doubleValue());
 			}
 		} catch (UnknownFunctionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (UnparsableExpressionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}catch (java.lang.ArithmeticException aex) {
-			Log.w(TAG, aex);
-			display = "Error";
+			aex.printStackTrace();
 		}catch(EmptyStackException ese) {
-			Log.w(TAG, ese);
-			display = "Error";
+			ese.printStackTrace();
+		}catch(IllegalArgumentException iax) {
+			iax.printStackTrace();
 		}
 	}
 

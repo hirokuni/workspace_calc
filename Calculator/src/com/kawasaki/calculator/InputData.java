@@ -21,7 +21,9 @@ public class InputData {
 	}
 
 	public void set(int i) {
-
+		if (setdata.length() > digitLimitNumber)
+			return;
+		
 		if (setdata.contains(".")) {
 			if (setdata.length() >= digitLimitNumber + 1)
 				return;

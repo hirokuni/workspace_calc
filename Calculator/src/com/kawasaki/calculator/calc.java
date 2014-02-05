@@ -27,7 +27,7 @@ public class calc {
 	private static final String DIV = "/";
 	private static final String MUL = "*";
 
-	static int digitNumLimit;
+	
 
 	public calc() {
 		clear();
@@ -37,7 +37,7 @@ public class calc {
 		Log.i(TAG, "clear()");
 		mathematical_fomula = new StringBuilder();
 		memory_d = 0;
-		digitNumLimit = 10;// default;
+		
 		lastOperator = new String();
 		lastNumber = new String();
 		constCalcNum = new String();
@@ -111,6 +111,7 @@ public class calc {
 	public double equal() throws UnknownFunctionException,
 			UnparsableExpressionException {
 
+		
 		String tmp = mathematical_fomula.toString();
 
 		if (!tmp.contains(PLUS) && !tmp.contains(DIV) && !tmp.contains(MUL)
@@ -190,10 +191,6 @@ public class calc {
 
 		return ret;
 	}
-
-	public void setDigitsLimit(int limitNum) {
-		digitNumLimit = limitNum;
-
-	}
+	
 
 }

@@ -4,6 +4,7 @@ import com.kawasaki.calculator.R.id;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -42,10 +43,9 @@ public class MainActivity extends Activity implements OnClickListener {
 		result = (TextView) findViewById(id.display);
 
 		adapter = new Adapter();
-		adapter.setMaxDigitNumber(1000);// arithmetic point is
-															// not counted.
+		
 
-		setMaxTextSize(MaxString, result);
+		
 
 		return;
 
@@ -62,7 +62,6 @@ public class MainActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		int button_id = v.getId();
-		String displaied_number;
 
 		// input data
 		switch (button_id) {
@@ -128,12 +127,18 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	}
 
-	protected static final int MAX_FONT_SIZE = 100;
+	protected static final int MAX_FONT_SIZE = 500;
 	protected static final int MIN_FONT_SIZE = 10;
 
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		// setMaxTextSize(MaxString, result);
+		result.setBackgroundColor(Color.BLACK);
+		
+		result.setBackgroundColor(Color.WHITE);
+		result.setTextColor(Color.BLACK);
+		
+		setMaxTextSize(MaxString, result);
 	}
 
 	/*
@@ -152,6 +157,13 @@ public class MainActivity extends Activity implements OnClickListener {
 		for (int i = MAX_FONT_SIZE; i > MIN_FONT_SIZE; i = i - 2) {
 			p.setTextSize(i);
 			float width = tv.getWidth() / density; // Dip単位に変換します
+			
+			Log.i(TAG, "Text View width : " + tv.getWidth());
+			
+			if (width != 0){
+				Log.i(TAG,"width : " + width);
+			}
+			
 			if ((width >= p.measureText(str))) {
 				tv.setText(str);
 				int size = (int) (i - (3 * density));
