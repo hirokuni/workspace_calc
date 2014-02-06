@@ -14,10 +14,11 @@ public class History extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		textView =new TextView(this);
-		 setContentView(textView, new LayoutParams(LayoutParams.WRAP_CONTENT, 
+		
+		setContentView(textView, new LayoutParams(LayoutParams.WRAP_CONTENT, 
 		          LayoutParams.WRAP_CONTENT));
 		textView.setMovementMethod(ScrollingMovementMethod.getInstance());
-		
+		textView.setVerticalScrollBarEnabled(true);
 		textView.setText(MainActivity.history);
 	}
 
