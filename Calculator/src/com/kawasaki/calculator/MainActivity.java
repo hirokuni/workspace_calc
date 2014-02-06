@@ -4,11 +4,13 @@ import com.kawasaki.calculator.R.id;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -26,6 +28,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	private TextView result;
 	private Adapter adapter;
 	private String MaxString = "0123456789.";
+	public static String history;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,17 +46,42 @@ public class MainActivity extends Activity implements OnClickListener {
 		result = (TextView) findViewById(id.display);
 
 		adapter = new Adapter();
+		
+		history = new String();
 
 		return;
 
 	}
 
+	public static final int MENU_SELECT_HISTORY = 0;
+	public static final int MENU_SELECT_HISTORY_DELETE = 1;
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		//getMenuInflater().inflate(R.menu.main, menu);
-
+		// getMenuInflater().inflate(R.menu.main, menu);
+		menu.add(0, MENU_SELECT_HISTORY, 0, "履歴");
+		menu.add(0, MENU_SELECT_HISTORY_DELETE, 0, "履歴削除");
 		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case MENU_SELECT_HISTORY:
+			history = adapter.getHistory();
+			Intent intent = new Intent();
+			intent.setClassName("com.kawasaki.calculator",
+					"com.kawasaki.calculator.History");
+			startActivity(intent);
+			
+			return true;
+		case MENU_SELECT_HISTORY_DELETE:
+			adapter.resetHistory();
+			return true;
+		default:
+
+		}
+		return false;
 	}
 
 	@Override
@@ -117,7 +145,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			adapter.equal();
 			break;
 		default:
-			Log.w(TAG,"unknown button id");
+			Log.w(TAG, "unknown button id");
 		}
 
 		result.setText(adapter.getString());
@@ -132,7 +160,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		result.setBackgroundColor(Color.BLACK);
 		result.setBackgroundColor(Color.WHITE);
 		result.setTextColor(Color.BLACK);
-		
+
 		setMaxTextSize(MaxString, result);
 	}
 
@@ -152,18 +180,19 @@ public class MainActivity extends Activity implements OnClickListener {
 		for (int i = MAX_FONT_SIZE; i > MIN_FONT_SIZE; i = i - 2) {
 			p.setTextSize(i);
 			float width = tv.getWidth() / density; // Dip単位に変換します
-			
+
 			Log.i(TAG, "Text View width : " + tv.getWidth());
-			
-			if (width != 0){
-				Log.i(TAG,"width : " + width);
+
+			if (width != 0) {
+				Log.i(TAG, "width : " + width);
 			}
-			
+
 			if ((width >= p.measureText(str))) {
 				tv.setText(str);
 				int size = (int) (i - (3 * density));
 				tv.setTextSize(size);
-				tv.setText("0");
+
+				tv.setText(adapter.getString());
 				break;
 			}
 		}

@@ -29,8 +29,16 @@ public class Adapter {
 	private String MaxString = DEFUALT_MAX_STRING;
 	private int digitsLimit = MaxString.length() - 1;
 
+	public String getHistory() {
+		return cal.getHistory();
+	}
+	
 	public Adapter() {
 		calc_init();
+	}
+	
+	public void resetHistory(){
+		cal.resetHistory();
 	}
 
 	public void setMaxDigitNumber(int limit) {
@@ -61,6 +69,7 @@ public class Adapter {
 			display = "0";
 		return display;
 	}
+	
 
 	public void setClear() {
 		calc_init();
