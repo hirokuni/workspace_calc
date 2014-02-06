@@ -727,9 +727,62 @@ public class CalcTest extends TestCase {
 		cal.setVal(5);
 		assertEquals(6.0, cal.equal());
 	}
-	
+
 	// 8* = 64
 	public void test_() {
-		
+
+	}
+
+	public void test_bug_1() throws UnknownFunctionException,
+			UnparsableExpressionException {
+		cal.setVal(65);
+		assertEquals(65.0, cal.equal());
+		cal.setOperatorDiv();
+		cal.setVal(3);
+		assertEquals(21.666666666666668, cal.equal());
+		cal.setVal(21.666666666666668);
+		assertEquals(7.222222222222222, cal.equal());
+		cal.setVal(7.222222222222222);
+		assertEquals(2.4074074074074074, cal.equal());
+	}
+
+	// 6-=0
+	// 5=-1
+	public void test_minus_equal() throws UnknownFunctionException,
+			UnparsableExpressionException {
+		cal.setVal(6);
+		cal.setOperatorSub();
+		assertEquals(0.0, cal.equal());
+		cal.setVal(5);
+		assertEquals(-1.0, cal.equal());
+	}
+
+	// 6 += 12
+	// 5 = 11
+	public void test_plus_equal() throws UnknownFunctionException,
+			UnparsableExpressionException {
+		cal.setVal(6);
+		cal.setOperatorAdd();
+		assertEquals(12.0, cal.equal());
+		cal.setVal(5);
+		assertEquals(11.0, cal.equal());
+	}
+
+	public void test_mul_equal() throws UnknownFunctionException,
+			UnparsableExpressionException {
+		cal.setVal(6);
+		cal.setOperatorMul();
+		assertEquals(36.0, cal.equal());
+		cal.setVal(5);
+		assertEquals(30.0, cal.equal());
+	}
+
+	public void test_div_equal() throws UnknownFunctionException,
+			UnparsableExpressionException {
+		cal.setVal(6);
+		cal.setOperatorDiv();
+		assertEquals(1.0, cal.equal());
+		cal.setVal(9);
+		assertEquals(1.5, cal.equal());
 	}
 }

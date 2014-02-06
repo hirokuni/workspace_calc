@@ -268,6 +268,19 @@ public class AdapterTest extends AndroidTestCase {
 		assertEquals("1.111111E10", adapter.getString());
 	}
 
+	// Errorの後の数値入力
+	public void test_number_can_be_set_after_Error() {
+		adapter.setVal(6);
+		adapter.setOperator(Adapter.DIVISION);
+		adapter.setVal(0);
+		adapter.equal();
+		assertEquals("Error", adapter.getString());
+		adapter.setVal(5);
+		adapter.setOperator(Adapter.DIVISION);
+		adapter.setVal(2);
+		adapter.equal();
+		assertEquals("2.5", adapter.getString());
+	}
 
 	// 小数点以下の数値いれて、11桁にする
 

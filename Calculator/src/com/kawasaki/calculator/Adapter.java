@@ -201,18 +201,22 @@ public class Adapter {
 		}catch (java.lang.ArithmeticException aex) {
 			Log.w(TAG, aex);
 			display = "Error";
+			cal.clear();
 		} catch (UnknownFunctionException e) {
 			e.printStackTrace();
 			Log.w(TAG, e);
 			display = "Error";
+			cal.clear();
 		} catch (UnparsableExpressionException e) {
 			e.printStackTrace();
 			Log.w(TAG, e);
 			display = "Error";
+			cal.clear();
 		} catch (EmptyStackException ese) {
 			ese.printStackTrace();
 			Log.w(TAG, ese);
 			display = "Error";
+			cal.clear();
 		}
 
 		

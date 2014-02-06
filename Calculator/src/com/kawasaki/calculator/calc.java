@@ -52,6 +52,7 @@ public class calc {
 	public void setVal(double i) {
 		mathematical_fomula.append(i);
 		lastNumber = Double.toString(i);
+		Log.i(TAG, "Set : " + i);
 		return;
 	}
 
@@ -99,10 +100,15 @@ public class calc {
 
 	private double executeCalc(String str) throws UnknownFunctionException,
 			UnparsableExpressionException {
-		double ret;
+		
 
 		Calculable calc = new ExpressionBuilder(str).build();
-		return calc.calculate();
+		double ret = calc.calculate();
+		
+		Log.i(TAG, "数式 : " + str.toString());
+		Log.i(TAG, "結果 : " + ret);
+		
+		return ret;
 	    /*
 		BigDecimal calcB = new BigDecimal(calc.calculate());
 		//calcB = calcB.setScale(mScale, BigDecimal.ROUND_DOWN);
@@ -130,9 +136,16 @@ public class calc {
 			mathematical_fomula.append(constCalcNum);
 		} else {
 			// 通常計算
+			char lastIndexChar = mathematical_fomula.charAt(mathematical_fomula.length() - 1);
+			if (lastIndexChar == '-' || lastIndexChar == '+' || lastIndexChar == '*' || lastIndexChar == '/')
+			{
+				mathematical_fomula.insert(mathematical_fomula.length(), lastNumber);
+			}
 			constCalcNum = lastNumber;
 		}
 
+		
+		
 		memory_d = executeCalc(mathematical_fomula.toString());
 		mathematical_fomula = new StringBuilder();
 		lastResultNumber = Double.toString(memory_d);
