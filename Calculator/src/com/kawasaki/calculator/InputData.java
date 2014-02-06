@@ -15,14 +15,20 @@ public class InputData {
 	
 	
 	private void init() {
-		setdata = new String("0");
+		setdata = new String("NO_VAL");
 		isSetNumber = false;
 		digitLimitNumber = 10;
 	}
 
 	public void set(int i) {
+		if (setdata.equalsIgnoreCase("NO_VAL"))
+			setdata = new String("0");
+		
 		if (setdata.length() > digitLimitNumber)
 			return;
+		
+		if (setdata.contains("NO_VAL"))
+			setdata = new String("0");
 		
 		if (setdata.contains(".")) {
 			if (setdata.length() >= digitLimitNumber + 1)
@@ -50,7 +56,7 @@ public class InputData {
 
 		setdata += Integer.toString(i);
 	}
-
+	
 	/**
 	 * Set number forcibly
 	 */
@@ -59,14 +65,22 @@ public class InputData {
 		isSetNumber = true;
 	}
 
-	public double getNumberAndClear() {
+	public double getNumberAndClear() throws IllegalNumber {
+		
+		if (setdata.contains("NO_VAL")) {
+			throw new IllegalNumber("NO_VAL");
+		}
+		
 		double ret = Double.valueOf(setdata);
+		
 		init();
 		return ret;
 	}
 
 	public String getString() {
 		Log.i(TAG, "getString# setdata  " + setdata);		
+		if (setdata.equalsIgnoreCase("NO_VAL"))
+			setdata = new String("0");
 		return setdata;
 	}
 	
@@ -79,6 +93,10 @@ public class InputData {
 
 	public void setPoint() {
 		String point = ".";
+		
+		if (setdata.equalsIgnoreCase("NO_VAL"))
+			setdata = new String("0");
+		
 		if (!setdata.contains("."))
 			setdata += point;
 

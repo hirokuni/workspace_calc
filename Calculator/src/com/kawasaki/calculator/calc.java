@@ -99,11 +99,19 @@ public class calc {
 	}
 
 	private double executeCalc(String str) throws UnknownFunctionException,
-			UnparsableExpressionException {
+			UnparsableExpressionException, IllegalNumber {
 		
 
 		Calculable calc = new ExpressionBuilder(str).build();
-		double ret = calc.calculate();
+		
+		double ret = 0;
+		try {
+			ret = calc.calculate();
+		}catch(IllegalArgumentException iax) {
+			throw new IllegalNumber(iax.toString());
+		}
+		
+		
 		
 		Log.i(TAG, "数式 : " + str.toString());
 		Log.i(TAG, "結果 : " + ret);
@@ -124,7 +132,7 @@ public class calc {
 	}
 
 	public double equal() throws UnknownFunctionException,
-			UnparsableExpressionException {
+			UnparsableExpressionException, IllegalNumber {
 
 		
 		String tmp = mathematical_fomula.toString();
@@ -155,7 +163,7 @@ public class calc {
 
 	// if the calculation can't return current result, then
 	// UnknownFunctionExcetion will be returned.
-	public double getMemory() throws UnknownFunctionException {
+	public double getMemory() throws UnknownFunctionException, IllegalNumber {
 		double ret = 0.0;
 		String str = mathematical_fomula.toString();
 

@@ -43,8 +43,8 @@ public class Adapter {
 		display = new String("0");
 		data = new InputData();
 		setMaxDigitNumber(digitsLimit);
-		
-		//recalculation
+
+		// recalculation
 		sb = new StringBuilder();
 	}
 
@@ -52,11 +52,13 @@ public class Adapter {
 		data.set(i);
 		display = data.getString();
 
-		//recalculation
+		// recalculation
 		sb.append(i);
 	}
 
 	public String getString() {
+		if (display.contains("NO_VAL"))
+			display = "0";
 		return display;
 	}
 
@@ -69,7 +71,7 @@ public class Adapter {
 		data.setPoint();
 		display = data.getString();
 
-		//recalculation
+		// recalculation
 		if (!sb.toString().contains("."))
 			sb.append(".");
 	}
@@ -77,8 +79,8 @@ public class Adapter {
 	public void set00() {
 		data.set00();
 		display = data.getString();
-		
-		//recalculation
+
+		// recalculation
 		sb.append("00");
 	}
 
@@ -87,22 +89,19 @@ public class Adapter {
 	}
 
 	private void setDisplay() {
-	
-			try {
-				
-				String ret = prune_data(cal.getMemory());
-				display = data.remove_point_0(ret);
-				//display = data.remove_point_0(Double.toString(cal.getMemory()));
-			} catch (UnknownFunctionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (UnparsableExpressionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	
+		try {
+			String ret = prune_data(cal.getMemory());
+			display = data.remove_point_0(ret);
+		} catch (UnknownFunctionException e) {
+			e.printStackTrace();
+		} catch (UnparsableExpressionException e) {
+			e.printStackTrace();
+		} catch (IllegalNumber e) {
+			e.printStackTrace();
+		}
+
 	}
-	
+
 	public void setOperator(int ope) {
 
 		try {
@@ -111,32 +110,32 @@ public class Adapter {
 				cal.setVal(data.getNumberAndClear());
 				cal.setOperatorAdd();
 				setDisplay();
-				
-				//recalculation
+
+				// recalculation
 				sb.append("+");
 				break;
 			case MINUS:
 				cal.setVal(data.getNumberAndClear());
 				cal.setOperatorSub();
 				setDisplay();
-				
-				//recalculation
+
+				// recalculation
 				sb.append("-");
 				break;
 			case DIVISION:
 				cal.setVal(data.getNumberAndClear());
 				cal.setOperatorDiv();
 				setDisplay();
-				
-				//recalculation
+
+				// recalculation
 				sb.append("/");
 				break;
 			case MULTIPLY:
 				cal.setVal(data.getNumberAndClear());
 				cal.setOperatorMul();
 				setDisplay();
-				
-				//recalculation
+
+				// recalculation
 				sb.append("*");
 				break;
 			default:
@@ -146,59 +145,51 @@ public class Adapter {
 		} catch (java.lang.ArithmeticException aex) {
 			Log.w(TAG, aex);
 			display = "Error";
+		} catch (IllegalNumber e) {
+			e.printStackTrace();
+			Log.w(TAG, e.toString());
 		}
 
 	}
 
-	private String prune_data(double dval) throws UnknownFunctionException, UnparsableExpressionException{
+	private String prune_data(double dval) throws UnknownFunctionException,
+			UnparsableExpressionException {
 		String ret = new String("0");
 		BigDecimal bd = new BigDecimal(dval);
 		String plainStr = bd.toPlainString();
-		
+
 		if (plainStr.length() <= digitsLimit) {
 			ret = plainStr;
 		} else {
-		  	ret = Double.toString(dval);
-		  	if (ret.length() > digitsLimit) {
-		  		DecimalFormat df = new DecimalFormat("0.000000E0");
-		  		ret = df.format(dval);
-		  	}
-		  		
+			ret = Double.toString(dval);
+			if (ret.length() > digitsLimit) {
+				DecimalFormat df = new DecimalFormat("0.000000E0");
+				ret = df.format(dval);
+			}
+
 		}
-		
+
 		return ret;
 	}
-	
+
 	public void equal() {
 		double tmp = 0;
 		try {
 			String ret;
-			
-			cal.setVal(data.getNumberAndClear());
+
+			try {
+				cal.setVal(data.getNumberAndClear());
+			} catch (IllegalNumber e) {
+				e.printStackTrace();
+				Log.i(TAG, e.toString());
+			}
 			tmp = cal.equal();
 			
-			/*
-			BigDecimal bd = new BigDecimal(tmp);
-			String plainStr = bd.toPlainString();
-			
-			
-			if (plainStr.length() <= digitsLimit) {
-				ret = plainStr;
-			} else {
-			  	ret = Double.toString(tmp);
-			  	if (ret.length() > digitsLimit) {
-			  		DecimalFormat df = new DecimalFormat("0.000000E0");
-			  		ret = df.format(tmp);
-			  	}
-			  		
-			}
-			*/
-			
 			ret = prune_data(tmp);
-			
+
 			display = data.remove_point_0(ret);
 			data.setNumber(tmp);
-		}catch (java.lang.ArithmeticException aex) {
+		} catch (java.lang.ArithmeticException aex) {
 			Log.w(TAG, aex);
 			display = "Error";
 			cal.clear();
@@ -217,17 +208,21 @@ public class Adapter {
 			Log.w(TAG, ese);
 			display = "Error";
 			cal.clear();
+		} catch (IllegalNumber e) {
+			e.printStackTrace();
+			Log.w(TAG, e);
+			display = "Error";
+			cal.clear();
 		}
 
-		
-		//検算
+		// 検算
 		try {
 			Calculable calc = new ExpressionBuilder(sb.toString()).build();
 			BigDecimal calcB = new BigDecimal(calc.calculate());
-			calcB = calcB.setScale(10,BigDecimal.ROUND_DOWN);
-			
+			calcB = calcB.setScale(10, BigDecimal.ROUND_DOWN);
+
 			BigDecimal tmpB = new BigDecimal(tmp);
-			tmpB = tmpB.setScale(10,BigDecimal.ROUND_DOWN);
+			tmpB = tmpB.setScale(10, BigDecimal.ROUND_DOWN);
 			if (tmpB.doubleValue() != calcB.doubleValue()) {
 				Log.w(TAG, "検算 数式 : " + sb.toString());
 				Log.w(TAG, "計算結果  : " + tmpB.doubleValue());
@@ -237,11 +232,11 @@ public class Adapter {
 			e.printStackTrace();
 		} catch (UnparsableExpressionException e) {
 			e.printStackTrace();
-		}catch (java.lang.ArithmeticException aex) {
+		} catch (java.lang.ArithmeticException aex) {
 			aex.printStackTrace();
-		}catch(EmptyStackException ese) {
+		} catch (EmptyStackException ese) {
 			ese.printStackTrace();
-		}catch(IllegalArgumentException iax) {
+		} catch (IllegalArgumentException iax) {
 			iax.printStackTrace();
 		}
 	}

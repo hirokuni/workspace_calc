@@ -282,6 +282,12 @@ public class AdapterTest extends AndroidTestCase {
 		assertEquals("2.5", adapter.getString());
 	}
 
+	public void test_mul_equal(){
+		adapter.setVal(6);
+		adapter.setOperator(Adapter.MULTIPLY);
+		adapter.equal();
+		assertEquals("36", adapter.getString());
+	}
 	// 小数点以下の数値いれて、11桁にする
 
 	// 最大桁数設定

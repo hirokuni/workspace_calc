@@ -21,7 +21,7 @@ public class InputTest extends AndroidTestCase {
 	}
 
 	/* 整数のインプット */
-	public void test_intput_string_double_digits_and_get_the_number() {
+	public void test_intput_string_double_digits_and_get_the_number () throws IllegalNumber {
 		data.set(5);
 		data.set(6);
 
@@ -30,7 +30,7 @@ public class InputTest extends AndroidTestCase {
 	}
 
 	/* 二桁以上の数値インプットにおいて、0が最初にinputされたらカウントしない */
-	public void test_0_is_not_added() {
+	public void test_0_is_not_added() throws IllegalNumber {
 		data.set(0);
 		assertEquals(0.0, data.getNumberAndClear());
 		assertEquals("0", data.getString());
@@ -41,7 +41,7 @@ public class InputTest extends AndroidTestCase {
 	}
 
 	/* 数値を取得すると、保存していた数値を０にリセットする */
-	public void test_data_is_cleared_when_get_number() {
+	public void test_data_is_cleared_when_get_number () throws IllegalNumber {
 		data.set(5);
 		assertEquals("5", data.getString());
 		assertEquals(5.0, data.getNumberAndClear());
@@ -49,7 +49,7 @@ public class InputTest extends AndroidTestCase {
 		assertEquals(0.0, data.getNumberAndClear());
 	}
 
-	public void test_tmp_data_set() {
+	public void test_tmp_data_set () throws IllegalNumber {
 		data.set(5);
 		data.set(1);
 		data.setNumber(6.0);
@@ -59,7 +59,7 @@ public class InputTest extends AndroidTestCase {
 	/**
 	 * 
 	 */
-	public void test_setNumber_is_cleared_with_set() {
+	public void test_setNumber_is_cleared_with_set () throws IllegalNumber {
 		data.set(5);
 		data.set(1);
 		assertEquals(51.0, data.getNumberAndClear());
@@ -70,7 +70,7 @@ public class InputTest extends AndroidTestCase {
 	}
 
 	/* 小数点のinput */
-	public void test_input_arithmetic_point() {
+	public void test_input_arithmetic_point () throws IllegalNumber {
 		data.set(1);
 		data.setPoint();
 		data.set(2);
@@ -78,7 +78,7 @@ public class InputTest extends AndroidTestCase {
 	}
 
 	// if already point is contained, nothing is set
-	public void test_nothing_is_set_when_alread_point_is_contained() {
+	public void test_nothing_is_set_when_alread_point_is_contained () throws IllegalNumber {
 		data.set(1);
 		data.setPoint();
 		data.set(2);
@@ -88,7 +88,7 @@ public class InputTest extends AndroidTestCase {
 	}
 
 	// 小数点以下に０を連続してinputできる
-	public void test_0_can_be_added_continuously_after_the_decimal_point() {
+	public void test_0_can_be_added_continuously_after_the_decimal_point () throws IllegalNumber {
 		data.set(1);
 		data.setPoint();
 		data.set(0);
@@ -97,7 +97,7 @@ public class InputTest extends AndroidTestCase {
 		assertEquals(1.001, data.getNumberAndClear());
 	}
 
-	public void test_0_can_be_added_continuously_after_the_decimal_point_with_all_0() {
+	public void test_0_can_be_added_continuously_after_the_decimal_point_with_all_0 () throws IllegalNumber {
 		data.set(0);
 		data.setPoint();
 		data.set(0);
@@ -107,14 +107,14 @@ public class InputTest extends AndroidTestCase {
 	}
 
 	// 何も数値を入力していない状態で、小数点から入力を開始すると、0.xxの表記になる
-	public void test_input_arithmetic_point_with_no_input() {
+	public void test_input_arithmetic_point_with_no_input () throws IllegalNumber {
 		data.setPoint();
 		data.set(2);
 		assertEquals(0.2, data.getNumberAndClear());
 	}
 
 	// 0の数値を入力した後、小数点から入力を開始すると、0.xxの表記になる
-	public void test_input_arithmetic_point_with_0() {
+	public void test_input_arithmetic_point_with_0 () throws IllegalNumber {
 		data.set(0);
 		data.setPoint();
 		data.set(2);
@@ -122,20 +122,20 @@ public class InputTest extends AndroidTestCase {
 	}
 
 	// 00の入力
-	public void test_00_is_added_when_non_0_value_was_set() {
+	public void test_00_is_added_when_non_0_value_was_set () throws IllegalNumber {
 		data.set(1);
 		data.set00();
 		assertEquals(100.0, data.getNumberAndClear());
 	}
 	
-	public void test_00_is_not_added_when_only_0_is_set() {
+	public void test_00_is_not_added_when_only_0_is_set () throws IllegalNumber {
 		data.set(0);
 		data.set00();
 		assertEquals(0.0, data.getNumberAndClear());
 	}
 	
 	// 00は小数点の時、00は入力される
-	public void test_00_is_added_after_the_arithmetic_point() {
+	public void test_00_is_added_after_the_arithmetic_point () throws IllegalNumber {
 		data.set(0);
 		data.setPoint();
 		data.set00();
@@ -144,7 +144,7 @@ public class InputTest extends AndroidTestCase {
 	}
 	
 	// max 2桁がinput されたときは、それ以上のINPUTは無視される
-	public void test_max_input_digit_number_is_2() {
+	public void test_max_input_digit_number_is_2 () throws IllegalNumber {
 		data.setDigitNumberLimit(2);
 		
 		data.set(1);
@@ -155,7 +155,7 @@ public class InputTest extends AndroidTestCase {
 	}
 	
 	// max 4桁がinput されたときは、それ以上のINPUTは無視される
-	public void test_max_input_digit_number_is_4() {
+	public void test_max_input_digit_number_is_4 () throws IllegalNumber {
 		data.setDigitNumberLimit(4);
 		
 		data.set(1);
@@ -170,7 +170,7 @@ public class InputTest extends AndroidTestCase {
 	}
 	
 	// max 4桁がinput されたときは、それ以上のINPUTは無視される (Pointは関係ない)
-	public void test_max_input_digit_number_is_4_with_arithmetic_point() {
+	public void test_max_input_digit_number_is_4_with_arithmetic_point () throws IllegalNumber {
 		data.setDigitNumberLimit(4);
 		
 		data.set(1);
@@ -186,7 +186,7 @@ public class InputTest extends AndroidTestCase {
 	}
 	
 	// 桁数のLimitは5。4桁inputされた状態で00を入力した場合、0は一つしかINPUTされない
-	public void test_max_input_digit_number_is_5_and_one_0_is_inputted_with_00() {
+	public void test_max_input_digit_number_is_5_and_one_0_is_inputted_with_00 () throws IllegalNumber {
 		data.setDigitNumberLimit(4);
 		
 		data.set(1);
