@@ -4,7 +4,7 @@ workspace_calc
 
 * Folder structure <br>
 ** CalcTest --- It contains test cases for Android Junit. <br>
-** Calculator --- It contains calculator android application. The required minimum android API version is 14. ( there is a package named "obsolete". Code in that package folder won't be used. )<br>
+** Calculator --- It contains calculator android application. The required minimum android API version is 14.( there is a package named "obsolete". Code in that package folder won't be used. )<br>
 
 
 
@@ -21,7 +21,7 @@ from a user into the logic, and forward the result to UI. <br>
 calc.java : operating plus, multiplication, subtraction, division. <br>
 
 
-* Architectural main point
+* Architectural main point <br>
 Main point is testability since this project is short and should keep high quality at the same time. Almost
 code must be tested alwasys. So to realize this point, test driven development style can be stronogly recomended
 as a development style. so, this time, the main architectural point is focrusing on the testability. <br>
