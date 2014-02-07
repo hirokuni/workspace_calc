@@ -32,3 +32,4 @@ all input data from user is passed to "Input" and it is managing the data. "Logi
 which can be calculatable well formated data which is passed by "Adapter". 
 So, main module which can be easily managed by test driven development is separeted from UI part, and the 
 structure can improve the test driven development style.
+** NOTE : UI part is mainly tested by manual. It is tested with a user point of view. 
