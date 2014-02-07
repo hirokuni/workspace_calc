@@ -8,7 +8,7 @@ workspace_calc
 
 
 
-* Each module role
+* Each module role <br>
 ** UI <br>
 MainActivity.java : It is main calculator UI. It handles calculator relatd buttons event and show the each operation result. <br>
 History.java : It is showing calculation history. It is launched from MainActivity.<br>
