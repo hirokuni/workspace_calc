@@ -9,7 +9,8 @@ CalcTest --- It contains test cases for Android Junit.
 Calculator --- It contains calculator android application. The required minimum android API version is 14.
 
 
-*Desing of Calculator
+
+*Each module role
 
 ** UI
 MainActivity.java : It is main calculator UI. It handles calculator relatd buttons event and show the each operation result.
@@ -26,3 +27,14 @@ from a user into the logic, and forward the result to UI.
 ** Logic
 calc.java : operating plus, multiplication, subtraction, division.
 
+
+* Architectural main point
+Main point is testability since this project is short and should keep high quality at the same time. Almost
+code must be tested alwasys. So to realize this point, test driven development style can be stronogly recomended
+as a development style. so, this time, the main architectural point is focrusing on the testability.
+** Testability in this application : Each module should have high testability for unit test. To realize this, almost code
+is located to "Input", "Adapter", "Logic". "UI" is just showing data which is passed by "Adapter". And
+all input data from user is passed to "Input" and it is managing the data. "Logic" gets the inputted data
+which can be calculatable well formated data which is passed by "Adapter". 
+So, main module which can be easily managed by test driven development is separeted from UI part, and the 
+structure can improve the test driven development style.
