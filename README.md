@@ -4,7 +4,7 @@ workspace_calc
 
 * Folder structure <br>
 ** CalcTest --- It contains test cases for Android Junit. <br>
-** Calculator --- It contains calculator android application. The required minimum android API version is 14.<br>
+** Calculator --- It contains calculator android application. The required minimum android API version is 14. ( there is a package named "obsolete". Code in that package folder won't be used. )<br>
 
 
 
