@@ -16,7 +16,7 @@ History.java : It is showing calculation history. It is launched from MainActivi
 InutData.java : It is a support class for the MainActivity. It is caracterized to store and return user input data. <br>
 ** Adapter <br>
 Adapter.java : It is a mediator between UI and calculation logic (calc.java). It passes the input data <br>
-from a user into the logic, and forward the result to UI.
+from a user into the logic, and forward the result to UI. <br>
 ** Logic <br>
 calc.java : operating plus, multiplication, subtraction, division. <br>
 
