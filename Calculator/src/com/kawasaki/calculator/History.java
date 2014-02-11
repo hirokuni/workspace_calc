@@ -18,6 +18,7 @@ public class History extends Activity {
 		setContentView(textView, new LayoutParams(LayoutParams.WRAP_CONTENT, 
 		          LayoutParams.WRAP_CONTENT));
 		textView.setMovementMethod(ScrollingMovementMethod.getInstance());
+
 		textView.setVerticalScrollBarEnabled(true);
 		textView.setText(MainActivity.history);
 	}
